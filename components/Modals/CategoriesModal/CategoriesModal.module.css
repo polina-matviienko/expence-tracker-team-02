@@ -1,0 +1,186 @@
+.container {
+  width: 440px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
+  color: var(--white);
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.closeBtn:hover {
+  color: var(--white);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 350px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--component-bg-color);
+  border-radius: var(--radius-input);
+  transition: transform 0.2s ease, background-color 0.2s;
+}
+
+.item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.name {
+  font-size: 16px;
+  color: var(--white);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.selectBtn {
+  background: rgba(0, 210, 127, 0.1);
+  color: var(--green-neon);
+  border: 1px solid rgba(0, 210, 127, 0.2);
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.selectBtn:hover {
+  background: rgba(0, 210, 127, 0.2);
+}
+
+.editIconBtn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.editIconBtn:hover {
+  color: var(--green-neon);
+}
+
+.deleteBtn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.deleteBtn:hover {
+  color: var(--error-red);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 24px;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-input);
+  padding: 12px 16px;
+  color: var(--white);
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+  border-color: var(--green-neon);
+  box-shadow: 0 0 0 2px rgba(0, 210, 127, 0.2);
+}
+
+.errorText {
+  font-size: 12px;
+  color: var(--error-red);
+  padding: 10px 0;
+  text-align: center;
+}
+
+.actionBtn {
+  background: var(--green-neon);
+  color: #000000;
+  border: none;
+  border-radius: var(--radius-btn);
+  padding: 12px 24px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.actionBtn:hover {
+  background: var(--green-hover);
+}
+
+.loading {
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 20px;
+}

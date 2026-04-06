@@ -1,4 +1,4 @@
-﻿// Zustand-стор для UI‑тоглов (бургер, панели, модалки).
+// Zustand-стор для UI‑тоглов (бургер, панели, модалки).
 import { create } from 'zustand';
 
 interface UiState {
@@ -7,6 +7,8 @@ interface UiState {
   isUserSettingsModalOpen: boolean;
   isCategoriesModalOpen: boolean;
   isEditTransactionModalOpen: boolean;
+  selectedCategoryName: string;
+  transactionType: 'incomes' | 'expenses';
   openBurgerMenu: () => void;
   closeBurgerMenu: () => void;
   toggleBurgerMenu: () => void;
@@ -19,7 +21,10 @@ interface UiState {
   closeCategoriesModal: () => void;
   openEditTransactionModal: () => void;
   closeEditTransactionModal: () => void;
+  setSelectedCategoryName: (name: string) => void;
+  setTransactionType: (type: 'incomes' | 'expenses') => void;
 }
+
 
 export const useUiStore = create<UiState>((set) => ({
   isBurgerMenuOpen: false,
@@ -27,6 +32,8 @@ export const useUiStore = create<UiState>((set) => ({
   isUserSettingsModalOpen: false,
   isCategoriesModalOpen: false,
   isEditTransactionModalOpen: false,
+  selectedCategoryName: '',
+  transactionType: 'expenses',
 
   openBurgerMenu: () => set({ isBurgerMenuOpen: true }),
   closeBurgerMenu: () => set({ isBurgerMenuOpen: false }),
@@ -46,4 +53,8 @@ export const useUiStore = create<UiState>((set) => ({
 
   openEditTransactionModal: () => set({ isEditTransactionModalOpen: true }),
   closeEditTransactionModal: () => set({ isEditTransactionModalOpen: false }),
+
+  setSelectedCategoryName: (name: string) => set({ selectedCategoryName: name }),
+  setTransactionType: (type: 'incomes' | 'expenses') => set({ transactionType: type }),
 }));
+

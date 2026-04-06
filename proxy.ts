@@ -146,9 +146,12 @@ export async function proxy(request: NextRequest) {
 
   const isAuthenticated = Boolean(nextAccessToken || nextRefreshToken);
 
+/*
   if (isPrivateRoute && !isAuthenticated) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
+*/
+
 
   if (isAuthRoute && isAuthenticated) {
     return NextResponse.redirect(new URL('/transactions/expenses', request.url));

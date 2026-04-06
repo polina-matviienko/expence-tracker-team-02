@@ -6,6 +6,7 @@ export const queryKeys = {
   currentUser: ['current-user'] as const,
   categories: ['categories'] as const,
   stats: ['stats', 'current-month'] as const,
+  statsCurrentMonth: ['stats', 'current-month'] as const,
 
   transactions: (
     type: TransactionType,

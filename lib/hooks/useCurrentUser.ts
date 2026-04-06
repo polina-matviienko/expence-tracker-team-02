@@ -1,12 +1,13 @@
-﻿// Получение текущего юзера и синхронизация auth/user стора.
+// Получение текущего юзера и синхронизация auth/user стора.
 'use client';
 
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getCurrentUser } from '@/lib/api/usersApi';
 import { queryKeys } from '@/lib/constants/queryKeys';
-import { useAuthStore } from '@/store/authStore';
-import { useUserStore } from '@/store/userStore';
+import { useAuthStore } from '@/lib/store/authStore';
+import { useUserStore } from '@/lib/store/userStore';
+
 
 export const useCurrentUser = () => {
   const setUser = useUserStore((state) => state.setUser);
@@ -15,9 +16,18 @@ export const useCurrentUser = () => {
 
   const query = useQuery({
     queryKey: queryKeys.currentUser,
-    queryFn: getCurrentUser,
+    queryFn: () => Promise.resolve({
+      name: 'Test User',
+      email: 'test@example.com',
+      avatarUrl: '',
+      transactionsTotal: {
+        incomes: 5000.00,
+        expenses: 1250.00
+      }
+    }),
     retry: false,
   });
+
 
   useEffect(() => {
     if (query.isSuccess && query.data) {

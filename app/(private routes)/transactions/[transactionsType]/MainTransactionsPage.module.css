@@ -1,0 +1,62 @@
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  color: #fff;
+  overflow: hidden;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin: auto 0;
+}
+
+.headerSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.title {
+  font-size: 38px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.description {
+  font-size: 16px;
+  color: rgba(250, 250, 250, 0.5);
+  max-width: 600px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.mainGrid {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.chartSection {
+  flex: 1;
+}
+
+.formSection {
+  flex: 1;
+}
+
+@media (max-width: 1024px) {
+  .pageContainer {
+    height: auto;
+    overflow: visible;
+  }
+  
+  .mainGrid {
+    flex-direction: column;
+  }
+}

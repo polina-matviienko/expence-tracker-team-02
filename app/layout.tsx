@@ -16,6 +16,8 @@ export const metadata: Metadata = {
     "Track your income and expenses easily with our intuitive finance management tool.",
 };
 
+import Providers from "@/components/Layout/Providers";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -23,7 +25,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${inter.variable}`}>{children}</body>
+      <body className={`${inter.className} ${inter.variable}`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
+
