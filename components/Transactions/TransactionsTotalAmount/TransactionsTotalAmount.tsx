@@ -3,7 +3,6 @@
 import { useCurrentUser } from '@/lib/hooks/useCurrentUser';
 import styles from './TransactionsTotalAmount.module.css';
 import { IncomeIndicatorIcon, ExpenseIndicatorIcon } from '@/components/UI/Icons/Icons';
-import Loader from '@/components/UI/Loader/Loader';
 import Skeleton from '@/components/UI/Skeleton/Skeleton';
 
 export default function TransactionsTotalAmount() {

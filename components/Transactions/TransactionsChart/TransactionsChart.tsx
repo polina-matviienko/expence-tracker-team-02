@@ -3,7 +3,6 @@
 import { useMemo, useState } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { useStats } from '@/lib/hooks/useStats';
-import Loader from '@/components/UI/Loader/Loader';
 import Skeleton from '@/components/UI/Skeleton/Skeleton';
 import styles from './TransactionsChart.module.css';
 
