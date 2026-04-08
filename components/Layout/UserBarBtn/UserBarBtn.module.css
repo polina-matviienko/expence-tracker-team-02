@@ -8,13 +8,14 @@
   align-items: center;
   background-color: var(--component-bg-color);
   gap: 8px;
+  font-size: 14px;
   border-radius: 30px;
   padding: 6px 16px;
 }
 
 .avatarWrapper {
-  width: 44px;
-  height: 44px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   background-color: var(--overlay-color);
   display: flex;
@@ -52,4 +53,15 @@
 .chevronIcon {
   stroke: var(--green-neon);
   fill: none;
+}
+
+@media screen and (min-width: 768px) {
+  .userBtn {
+  font-size: 16px;
+}
+
+.avatarWrapper {
+  width: 44px;
+  height: 44px;
+}
 }
