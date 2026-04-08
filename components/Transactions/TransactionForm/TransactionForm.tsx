@@ -8,27 +8,27 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { toast } from 'react-hot-toast';
 import { useUserStore } from '@/lib/store/userStore';
 import { useUiStore } from '@/lib/store/uiStore';
-// import { useCategoryStore } from '@/lib/store/categoryStore'; // Currently problematic to read
 import { useCreateTransaction } from '@/lib/hooks/useCreateTransactionFixed';
 import styles from './TransactionForm.module.css';
-import { 
-  CalendarIcon, 
-  ClockIcon, 
-  IncomeIndicatorIcon, 
-  ExpenseIndicatorIcon 
-} from '@/components/UI/Icons/Icons';
 import Button from '@/components/UI/Button/Button';
 
 interface TransactionFormProps {
   transactionType: 'incomes' | 'expenses';
 }
 
-export default function TransactionForm({ transactionType }: TransactionFormProps) {
-  const { openCategoriesModal, selectedCategoryName, selectedCategoryId, setSelectedCategory } = useUiStore();
+export default function TransactionForm({
+  transactionType,
+}: TransactionFormProps) {
+  const {
+    openCategoriesModal,
+    selectedCategoryName,
+    selectedCategoryId,
+    setSelectedCategory,
+  } = useUiStore();
   const { user } = useUserStore();
   const currency = user?.currency ? user.currency.toUpperCase() : 'UAH';
   const createTransactionMutation = useCreateTransaction();
-  
+
   const formik = useFormik({
     initialValues: {
       type: transactionType,
@@ -55,7 +55,7 @@ export default function TransactionForm({ transactionType }: TransactionFormProp
           category: selectedCategoryId,
           sum: Number(values.sum),
         };
-        
+
         if (values.comment && values.comment.trim() !== '') {
           payload.comment = values.comment.trim();
         }
@@ -65,7 +65,9 @@ export default function TransactionForm({ transactionType }: TransactionFormProp
         resetForm();
         setSelectedCategory('', ''); // Clear after success
       } catch (error: any) {
-        toast.error(error.response?.data?.message || 'Failed to create transaction');
+        toast.error(
+          error.response?.data?.message || 'Failed to create transaction'
+        );
       }
     },
   });
@@ -84,12 +86,13 @@ export default function TransactionForm({ transactionType }: TransactionFormProp
   }, [selectedCategoryName]);
 
   const handleCategoryClick = () => {
-    useUiStore.getState().setTransactionType(formik.values.type as 'incomes' | 'expenses');
+    useUiStore
+      .getState()
+      .setTransactionType(formik.values.type as 'incomes' | 'expenses');
     openCategoriesModal();
   };
 
   return (
-
     <div className={styles.container}>
       <form className={styles.form} onSubmit={formik.handleSubmit}>
         <div className={styles.typeSelector}>
@@ -99,13 +102,13 @@ export default function TransactionForm({ transactionType }: TransactionFormProp
               name="type"
               value="expenses"
               checked={formik.values.type === 'expenses'}
-              onChange={(e) => {
+              onChange={e => {
                 const newType = e.target.value as 'incomes' | 'expenses';
                 formik.resetForm({
                   values: {
                     ...formik.initialValues,
                     type: newType,
-                  }
+                  },
                 });
                 useUiStore.getState().setTransactionType(newType);
                 setSelectedCategory('', '');
@@ -119,13 +122,13 @@ export default function TransactionForm({ transactionType }: TransactionFormProp
               name="type"
               value="incomes"
               checked={formik.values.type === 'incomes'}
-              onChange={(e) => {
+              onChange={e => {
                 const newType = e.target.value as 'incomes' | 'expenses';
                 formik.resetForm({
                   values: {
                     ...formik.initialValues,
                     type: newType,
-                  }
+                  },
                 });
                 useUiStore.getState().setTransactionType(newType);
                 setSelectedCategory('', '');
@@ -141,35 +144,49 @@ export default function TransactionForm({ transactionType }: TransactionFormProp
             <div className={styles.inputWithIcon}>
               <DatePicker
                 selected={formik.values.date}
-                onChange={(date) => formik.setFieldValue('date', date)}
+                onChange={date => formik.setFieldValue('date', date)}
                 dateFormat="dd/MM/yyyy"
                 placeholderText="mm/dd/yyyy"
                 className={styles.input}
               />
-              <span className={styles.inputIcon}><CalendarIcon /></span>
+              <span className={styles.inputIcon}>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 32 32"
+                  stroke="currentColor"
+                  fill="none"
+                >
+                  <use href="/icons.svg#icon-calendar" />
+                </svg>
+              </span>
             </div>
             {formik.touched.date && formik.errors.date && (
-              <span className={styles.error}>{formik.errors.date.toString()}</span>
+              <span className={styles.error}>
+                {formik.errors.date.toString()}
+              </span>
             )}
           </div>
           <div className={styles.fieldGroup}>
             <label className={styles.label}>Time</label>
             <div className={styles.inputWithIcon}>
               <DatePicker
-                selected={
-                  (() => {
-                    if (!formik.values.time) return null;
-                    const [hours, minutes] = formik.values.time.split(':');
-                    const d = new Date();
-                    d.setHours(Number(hours) || 0, Number(minutes) || 0, 0, 0);
-                    return d;
-                  })()
-                }
-                onChange={(date) => {
+                selected={(() => {
+                  if (!formik.values.time) return null;
+                  const [hours, minutes] = formik.values.time.split(':');
+                  const d = new Date();
+                  d.setHours(Number(hours) || 0, Number(minutes) || 0, 0, 0);
+                  return d;
+                })()}
+                onChange={date => {
                   if (date) {
                     formik.setFieldValue(
                       'time',
-                      date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
+                      date.toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false,
+                      })
                     );
                   }
                 }}
@@ -182,7 +199,17 @@ export default function TransactionForm({ transactionType }: TransactionFormProp
                 placeholderText="00:00:00"
                 className={styles.input}
               />
-              <span className={styles.inputIcon}><ClockIcon /></span>
+              <span className={styles.inputIcon}>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 32 32"
+                  stroke="currentColor"
+                  fill="none"
+                >
+                  <use href="/icons.svg#icon-clock" />
+                </svg>
+              </span>
             </div>
             {formik.touched.time && formik.errors.time && (
               <span className={styles.error}>{formik.errors.time}</span>
@@ -238,8 +265,8 @@ export default function TransactionForm({ transactionType }: TransactionFormProp
           )}
         </div>
 
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           variant="green"
           className={styles.submitBtn}
           disabled={createTransactionMutation.isPending}

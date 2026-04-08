@@ -67,7 +67,9 @@ export default function TransactionsChart() {
       filteredStats.push({
         _id: 'others',
         category: 'Others',
-        totalAmount: Math.ceil(othersTotal < totalAmount * 0.01 ? totalAmount * 0.01 : othersTotal),
+        totalAmount: Math.ceil(
+          othersTotal < totalAmount * 0.01 ? totalAmount * 0.01 : othersTotal
+        ),
       });
     }
 
@@ -153,7 +155,7 @@ export default function TransactionsChart() {
                 ) {
                   setHoveredData({
                     percentage: Math.round((data.value / totalAmount) * 100),
-                    name: data.name,
+                    name: data.name || 'default',
                     value: data.value,
                   });
                 }
