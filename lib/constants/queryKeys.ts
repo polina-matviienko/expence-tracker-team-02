@@ -12,10 +12,8 @@ export const queryKeys = {
     type: TransactionType,
     params?: { date?: string; search?: string }
   ) =>
-    [
-      'transactions',
-      type,
-      params?.date ?? '',
-      params?.search ?? '',
-    ] as const,
+    ['transactions', type, params?.date ?? '', params?.search ?? ''] as const,
+
+  transactionsByType: (type: TransactionType) =>
+    ['transactions', type] as const,
 };
