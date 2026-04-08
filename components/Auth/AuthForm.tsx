@@ -186,6 +186,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
                 />
                 <button
                   type="button"
+                  onMouseDown={event => event.preventDefault()}
                   onClick={showEye ? togglePassword : undefined}
                   className={`${css.eyeButton} ${showTrash ? css.iconInvalid : ''} ${showCheck ? css.iconValid : ''}`}
                   tabIndex={-1}
@@ -204,11 +205,11 @@ export default function AuthForm({ mode }: AuthFormProps) {
                     </span>
                   ) : showPassword ? (
                     <svg width="16" height="16">
-                      <use href="/icons.svg#icon-eye-off" />
+                      <use href="/icons.svg#eye" />
                     </svg>
                   ) : (
                     <svg width="16" height="16">
-                      <use href="/icons.svg#eye" />
+                      <use href="/icons.svg#icon-eye-off" />
                     </svg>
                   )}
                 </button>
