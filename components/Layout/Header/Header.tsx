@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useAuthStore } from '@/lib/store/authStore';
 import Logo from '../Logo/Logo';
 import TransactionsHistoryNav from '../TransactionsHistoryNav/TransactionsHistoryNav';
 import UserBarBtn from '../UserBarBtn/UserBarBtn';
@@ -9,49 +10,61 @@ import css from './Header.module.css';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isAuthenticated = true; // Тимчасово
+  const { isAuthenticated, isInitialized } = useAuthStore();
+
   const headerClasses = `${css.header} ${!isAuthenticated ? css.isPublic : ''}`;
+
+  if (!isInitialized) {
+    return (
+      <header className={headerClasses}>
+        <div className="container">
+          <div className={css.headerContent}>
+            <Logo />
+          </div>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <>
-    <header className={headerClasses}>
-      <div className="container">
-        <div className={css.headerContent}>
-          <Logo />
+      <header className={headerClasses}>
+        <div className="container">
+          <div className={css.headerContent}>
+            <Logo />
 
-          {isAuthenticated && (
-            <>
-              <nav
-                className={css.navigation}
-                aria-label="Main transaction navigation"
-              >
-                <TransactionsHistoryNav />
-              </nav>
+            {isAuthenticated && (
+              <>
+                <nav
+                  className={css.navigation}
+                  aria-label="Main transaction navigation"
+                >
+                  <TransactionsHistoryNav />
+                </nav>
 
-              <div className={css.userBarBtn}>
-                <UserBarBtn />
-              </div>
+                <div className={css.userBarBtn}>
+                  <UserBarBtn />
+                </div>
 
-              <button
-                className={css.burgerBtn}
-                type="button"
-                aria-label="Open menu"
-                onClick={() => setIsMenuOpen(true)}
-              >
-                <svg className={css.burgerIcon}>
-                  <use href="/icons.svg#icon-burger-menu" />
-                </svg>
-              </button>
+                <button
+                  className={css.burgerBtn}
+                  type="button"
+                  aria-label="Open menu"
+                  onClick={() => setIsMenuOpen(true)}
+                >
+                  <svg className={css.burgerIcon}>
+                    <use href="/icons.svg#icon-burger-menu" />
+                  </svg>
+                </button>
               </>
-          )}
+            )}
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
 
-    <BurgerMenu
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-      />
+      {isAuthenticated && (
+        <BurgerMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+      )}
     </>
   );
 }
