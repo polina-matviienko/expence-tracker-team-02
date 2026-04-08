@@ -21,7 +21,7 @@ export const useUpdateTransaction = () => {
       updateTransaction(type, id, data),
     onSuccess: async (_, variables) => {
       await queryClient.invalidateQueries({
-        queryKey: queryKeys.transactions(variables.type),
+        queryKey: queryKeys.transactionsByType(variables.type),
       });
       await queryClient.invalidateQueries({ queryKey: queryKeys.currentUser });
       await queryClient.invalidateQueries({ queryKey: queryKeys.stats });
