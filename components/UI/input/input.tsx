@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './input.module.css';
+import css from './input.module.css';
 
 type IconType = React.ReactNode | string;
 
@@ -26,7 +26,7 @@ export const Input = ({
     if (!icon) return null;
     if (typeof icon === 'string') {
       return (
-        <svg className={styles.icon} aria-hidden>
+        <svg className={css.icon} aria-hidden>
           <use href={`/icons.svg#${icon}`} />
         </svg>
       );
@@ -36,29 +36,27 @@ export const Input = ({
 
   return (
     <div
-      className={`${styles.wrapper} ${fullWidth ? styles.fullWidth : ''} ${
+      className={`${css.wrapper} ${fullWidth ? css.fullWidth : ''} ${
         containerClassName ?? ''
       }`.trim()}
     >
-      {label && <label className={styles.label}>{label}</label>}
+      {label && <label className={css.label}>{label}</label>}
 
-      <div className={`${styles.field} ${error ? styles.error : ''}`.trim()}>
-        {iconLeft && (
-          <span className={styles.iconLeft}>{renderIcon(iconLeft)}</span>
-        )}
+      <div className={`${css.field} ${error ? css.error : ''}`.trim()}>
+        {iconLeft && <span className={css.iconLeft}>{renderIcon(iconLeft)}</span>}
 
         <input
           {...props}
-          className={`${styles.input} ${className ?? ''}`.trim()}
+          className={`${css.input} ${className ?? ''}`.trim()}
           aria-invalid={Boolean(error)}
         />
 
         {iconRight && (
-          <span className={styles.iconRight}>{renderIcon(iconRight)}</span>
+          <span className={css.iconRight}>{renderIcon(iconRight)}</span>
         )}
       </div>
 
-      {error && <p className={styles.errorText}>{error}</p>}
+      {error && <p className={css.errorText}>{error}</p>}
     </div>
   );
 };

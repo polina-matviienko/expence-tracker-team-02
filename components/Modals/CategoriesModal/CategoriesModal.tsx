@@ -6,18 +6,22 @@ import * as Yup from 'yup';
 import Modal from '../Modal/Modal';
 import { useUiStore } from '@/lib/store/uiStore';
 import { useCategories } from '@/lib/hooks/useCategoriesFixed';
-import { useCreateCategory, useUpdateCategory, useDeleteCategory } from '@/lib/hooks/useCategoriesCRUD';
-import { EditIcon, DeleteIcon } from '@/components/UI/Icons/Icons';
+import {
+  useCreateCategory,
+  useUpdateCategory,
+  useDeleteCategory,
+} from '@/lib/hooks/useCategoriesCRUD';
+import { EditIcon, DeleteIcon, SelectIcon } from '@/components/UI/Icons/Icons';
 
 import { toast } from 'react-hot-toast';
 import styles from './CategoriesModal.module.css';
 
 export default function CategoriesModal() {
-  const { 
-    isCategoriesModalOpen, 
-    closeCategoriesModal, 
-    setSelectedCategoryName,
-    transactionType 
+  const {
+    isCategoriesModalOpen,
+    closeCategoriesModal,
+    setSelectedCategory,
+    transactionType,
   } = useUiStore();
 
   const { data: categoriesData, isLoading, isError } = useCategories();
@@ -40,15 +44,15 @@ export default function CategoriesModal() {
     onSubmit: async (values, { resetForm }) => {
       try {
         if (editingId) {
-          await updateCategoryMutation.mutateAsync({ 
-            id: editingId, 
-            categoryName: values.categoryName 
+          await updateCategoryMutation.mutateAsync({
+            id: editingId,
+            categoryName: values.categoryName,
           });
           toast.success('Category updated');
         } else {
-          await createCategoryMutation.mutateAsync({ 
+          await createCategoryMutation.mutateAsync({
             categoryName: values.categoryName,
-            type: transactionType
+            type: transactionType,
           });
           toast.success('Category added');
         }
@@ -61,7 +65,9 @@ export default function CategoriesModal() {
   });
 
   // The API returns { incomes: [], expenses: [] }
-  const currentCategories = categoriesData ? (categoriesData as any)[transactionType] || [] : [];
+  const currentCategories = categoriesData
+    ? (categoriesData as any)[transactionType] || []
+    : [];
 
   const handleEditInit = (id: string, name: string) => {
     setEditingId(id);
@@ -77,8 +83,8 @@ export default function CategoriesModal() {
     }
   };
 
-  const handleSelect = (name: string) => {
-    setSelectedCategoryName(name);
+  const handleSelect = (id: string, name: string) => {
+    setSelectedCategory(id, name);
     closeCategoriesModal();
   };
 
@@ -93,37 +99,43 @@ export default function CategoriesModal() {
       <div className={styles.container}>
         <div className={styles.header}>
           <h2 className={styles.title}>
-            {transactionType === 'incomes' ? 'Incomes' : 'Expenses'} Categories
+            {transactionType === 'incomes' ? 'Incomes' : 'Expenses'}
           </h2>
+          <p className={styles.subtext}>All Category</p>
         </div>
 
         <div className={styles.list}>
           {isLoading ? (
             <p className={styles.loading}>Loading categories...</p>
           ) : isError ? (
-             <p className={styles.errorText}>Failed to load categories. Please login first.</p>
+            <p className={styles.errorText}>
+              Failed to load categories. Please login first.
+            </p>
           ) : currentCategories.length === 0 ? (
-             <p className={styles.loading}>No categories found for {transactionType}</p>
+            <p className={styles.loading}>
+              No categories found for {transactionType}
+            </p>
           ) : (
             currentCategories.map((cat: any) => (
               <div key={cat._id} className={styles.item}>
                 <span className={styles.name}>{cat.categoryName}</span>
                 <div className={styles.actions}>
-                  <button 
-                    className={styles.selectBtn} 
-                    onClick={() => handleSelect(cat.categoryName)}
+                  <button
+                    className={styles.selectBtn}
+                    onClick={() => handleSelect(cat._id, cat.categoryName)}
+                    title="Select"
                   >
-                    Select
+                    <SelectIcon />
                   </button>
-                  <button 
-                    className={styles.editIconBtn} 
+                  <button
+                    className={styles.editIconBtn}
                     onClick={() => handleEditInit(cat._id, cat.categoryName)}
                     title="Edit"
                   >
                     <EditIcon />
                   </button>
-                  <button 
-                    className={styles.deleteBtn} 
+                  <button
+                    className={styles.deleteBtn}
                     onClick={() => handleDelete(cat._id)}
                     disabled={deleteCategoryMutation.isPending}
                     title="Delete"
@@ -137,30 +149,39 @@ export default function CategoriesModal() {
         </div>
 
         <form className={styles.form} onSubmit={formik.handleSubmit}>
-          <div className={styles.inputWrapper}>
-            <input
-              type="text"
-              name="categoryName"
-              placeholder="Enter category name"
-              value={formik.values.categoryName}
-              onChange={formik.handleChange}
-              className={styles.input}
-            />
+          <div className={styles.fieldWrapper}>
+            <label className={styles.inputLabel}>New Category</label>
+            <div className={styles.inputWrapper}>
+              <input
+                type="text"
+                name="categoryName"
+                placeholder="Enter the text"
+                value={formik.values.categoryName}
+                onChange={formik.handleChange}
+                className={styles.input}
+              />
+              <button
+                type="submit"
+                className={styles.actionBtn}
+                disabled={
+                  createCategoryMutation.isPending ||
+                  updateCategoryMutation.isPending
+                }
+              >
+                {createCategoryMutation.isPending ||
+                updateCategoryMutation.isPending
+                  ? '...'
+                  : editingId
+                    ? 'Edit'
+                    : 'Add'}
+              </button>
+            </div>
             {formik.touched.categoryName && formik.errors.categoryName && (
-              <span className={styles.errorText}>{formik.errors.categoryName}</span>
+              <span className={styles.errorText}>
+                {formik.errors.categoryName}
+              </span>
             )}
           </div>
-          <button 
-            type="submit"
-            className={styles.actionBtn} 
-            disabled={createCategoryMutation.isPending || updateCategoryMutation.isPending}
-          >
-            {(createCategoryMutation.isPending || updateCategoryMutation.isPending) ? (
-              'Processing...'
-            ) : (
-              editingId ? 'Edit' : 'Add'
-            )}
-          </button>
         </form>
       </div>
     </Modal>

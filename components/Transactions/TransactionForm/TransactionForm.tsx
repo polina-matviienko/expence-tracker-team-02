@@ -24,7 +24,7 @@ interface TransactionFormProps {
 }
 
 export default function TransactionForm({ transactionType }: TransactionFormProps) {
-  const { openCategoriesModal, selectedCategoryName, setSelectedCategoryName } = useUiStore();
+  const { openCategoriesModal, selectedCategoryName, selectedCategoryId, setSelectedCategory } = useUiStore();
   const { user } = useUserStore();
   const currency = user?.currency ? user.currency.toUpperCase() : 'UAH';
   const createTransactionMutation = useCreateTransaction();
@@ -48,17 +48,22 @@ export default function TransactionForm({ transactionType }: TransactionFormProp
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
-        await createTransactionMutation.mutateAsync({
+        const payload: any = {
           type: values.type as 'incomes' | 'expenses',
           date: values.date.toISOString().split('T')[0],
           time: values.time,
-          category: values.category,
+          category: selectedCategoryId,
           sum: Number(values.sum),
-          comment: values.comment,
-        });
+        };
+        
+        if (values.comment && values.comment.trim() !== '') {
+          payload.comment = values.comment.trim();
+        }
+
+        await createTransactionMutation.mutateAsync(payload);
         toast.success('Transaction created successfully!');
         resetForm();
-        setSelectedCategoryName(''); // Clear after success
+        setSelectedCategory('', ''); // Clear after success
       } catch (error: any) {
         toast.error(error.response?.data?.message || 'Failed to create transaction');
       }
@@ -95,8 +100,15 @@ export default function TransactionForm({ transactionType }: TransactionFormProp
               value="expenses"
               checked={formik.values.type === 'expenses'}
               onChange={(e) => {
-                formik.handleChange(e);
-                useUiStore.getState().setTransactionType(e.target.value as 'incomes' | 'expenses');
+                const newType = e.target.value as 'incomes' | 'expenses';
+                formik.resetForm({
+                  values: {
+                    ...formik.initialValues,
+                    type: newType,
+                  }
+                });
+                useUiStore.getState().setTransactionType(newType);
+                setSelectedCategory('', '');
               }}
             />
             <span className={styles.radioCustom}>Expense</span>
@@ -108,8 +120,15 @@ export default function TransactionForm({ transactionType }: TransactionFormProp
               value="incomes"
               checked={formik.values.type === 'incomes'}
               onChange={(e) => {
-                formik.handleChange(e);
-                useUiStore.getState().setTransactionType(e.target.value as 'incomes' | 'expenses');
+                const newType = e.target.value as 'incomes' | 'expenses';
+                formik.resetForm({
+                  values: {
+                    ...formik.initialValues,
+                    type: newType,
+                  }
+                });
+                useUiStore.getState().setTransactionType(newType);
+                setSelectedCategory('', '');
               }}
             />
             <span className={styles.radioCustom}>Income</span>
@@ -225,7 +244,7 @@ export default function TransactionForm({ transactionType }: TransactionFormProp
           className={styles.submitBtn}
           disabled={createTransactionMutation.isPending}
         >
-          {createTransactionMutation.isPending ? 'Processing...' : 'Add Transaction'}
+          {createTransactionMutation.isPending ? '...' : 'Add'}
         </Button>
       </form>
     </div>

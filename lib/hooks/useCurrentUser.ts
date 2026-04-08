@@ -16,15 +16,7 @@ export const useCurrentUser = () => {
 
   const query = useQuery({
     queryKey: queryKeys.currentUser,
-    queryFn: () => Promise.resolve({
-      name: 'Test User',
-      email: 'test@example.com',
-      avatarUrl: '',
-      transactionsTotal: {
-        incomes: 5000.00,
-        expenses: 1250.00
-      }
-    }),
+    queryFn: getCurrentUser,
     retry: false,
   });
 

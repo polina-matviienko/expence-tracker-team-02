@@ -1,10 +1,10 @@
 .pageContainer {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  max-width: 1200px;
+  height: calc(100vh - 120px);
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 0 20px 20px;
   color: #fff;
   overflow: hidden;
 }
@@ -16,8 +16,9 @@
     "stats  form"
     "chart  form";
   grid-template-columns: 1fr auto;
-  gap: 40px;
-  align-items: flex-start;
+  column-gap: 44px;
+  row-gap: 24px;
+  align-items: center;
   margin: auto 0;
 }
 
@@ -37,7 +38,7 @@
   color: rgba(250, 250, 250, 0.5);
   max-width: 600px;
   line-height: 1.5;
-  margin: 0;
+  margin: 13px 0 0 0;
 }
 
 @media (max-width: 1024px) {
@@ -76,5 +77,11 @@
     font-size: 14px;
     letter-spacing: -0.02em;
     color: rgba(250, 250, 250, 0.4);
+  }
+
+  @media (max-width: 767px) {
+    .description {
+      margin-top: 20px;
+    }
   }
 }

@@ -16,7 +16,14 @@ export const useCreateTransaction = () => {
         queryKey: queryKeys.transactions(variables.type),
       });
       await queryClient.invalidateQueries({ queryKey: queryKeys.currentUser });
-      await queryClient.invalidateQueries({ queryKey: queryKeys.stats });
+      
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
+      const txDate = new Date(variables.date);
+      
+      if (txDate.getMonth() === currentMonth && txDate.getFullYear() === currentYear) {
+        await queryClient.invalidateQueries({ queryKey: queryKeys.stats });
+      }
     },
   });
 };

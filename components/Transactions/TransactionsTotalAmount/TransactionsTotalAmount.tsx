@@ -18,6 +18,17 @@ export default function TransactionsTotalAmount() {
     }).format(amount);
   };
 
+  const renderAmount = (amount: number) => {
+    if (!amount || amount === 0) {
+      return (
+        <p className={styles.amount} style={{ color: 'rgba(250, 250, 250, 0.5)' }}>
+          0
+        </p>
+      );
+    }
+    return <p className={styles.amount}>₴{formatAmount(amount)}</p>;
+  };
+
   if (isLoading) {
     return (
       <div className={styles.skeletonWrap}>
@@ -51,7 +62,7 @@ export default function TransactionsTotalAmount() {
         </div>
         <div className={styles.info}>
           <h3 className={styles.title}>Total Income</h3>
-          <p className={styles.amount}>₴{formatAmount(incomes)}</p>
+          {renderAmount(incomes)}
         </div>
       </div>
 
@@ -61,7 +72,7 @@ export default function TransactionsTotalAmount() {
         </div>
         <div className={styles.info}>
           <h3 className={styles.title}>Total Expense</h3>
-          <p className={styles.amount}>₴{formatAmount(expenses)}</p>
+          {renderAmount(expenses)}
         </div>
       </div>
     </div>

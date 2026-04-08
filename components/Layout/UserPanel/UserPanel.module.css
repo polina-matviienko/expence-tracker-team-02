@@ -1,0 +1,52 @@
+.panelContainer {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 50;
+  width: 217px;
+  padding: 18px 16px;
+  background-color: var(--bg-color);
+  border: 1px solid var(--white-dim-01);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 12px;
+  animation: slideIn 0.2s ease-out forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.panelBtn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--white-dim-05);
+  transition: color 0.2s ease;
+}
+
+.icon {
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--white-dim-05);
+  transition: stroke 0.2s ease;
+}
+
+.panelBtn:hover,
+.panelBtn:focus {
+  color: var(--white);
+}
+
+.panelBtn:hover .icon,
+.panelBtn:focus .icon {
+  stroke: var(--green-neon);
+}

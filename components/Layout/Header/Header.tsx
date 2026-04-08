@@ -10,6 +10,7 @@ import css from './Header.module.css';
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isAuthenticated = true; // Тимчасово
+  const { toggleBurgerMenu } = useUiStore();
   const headerClasses = `${css.header} ${!isAuthenticated ? css.isPublic : ''}`;
 
   return (

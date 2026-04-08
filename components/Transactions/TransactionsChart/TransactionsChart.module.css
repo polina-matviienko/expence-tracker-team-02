@@ -8,6 +8,7 @@
   width: 630px;
   height: 302px;
   box-sizing: border-box;
+  position: relative;
 }
 
 .chartAndListWrapper {
@@ -15,7 +16,6 @@
   flex-direction: row;
   gap: 32px;
   align-items: center;
-  position: relative;
 }
 
 .title {
@@ -28,6 +28,7 @@
 .pieContainer {
   position: relative;
   height: 240px;
+  transform: translateY(-10%);
 }
 
 .totalOverlay {
@@ -42,8 +43,9 @@
 }
 
 .totalValue {
-  font-size: 32px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fafafa;
   line-height: 1;
 }
 
@@ -56,20 +58,46 @@
 }
 
 .resultsList {
-  width: 189px;
+  width: 214px;
   height: 118px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  justify-content: flex-start;
+  gap: 14px;
   overflow-y: auto;
-  padding-right: 8px;
+  overflow-x: hidden;
+  padding-right: 22px;
+
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 40px;
+}
+
+.resultsList::-webkit-scrollbar {
+  width: 4px;
+}
+
+.resultsList::-webkit-scrollbar-track {
+  background: #0c0d0d;
+}
+
+.resultsList::-webkit-scrollbar-thumb {
+  background: #444446;
+  border-radius: 10px;
+}
+
+.resultsList::-webkit-scrollbar-button {
+  display: none;
 }
 
 .categoryItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 3px 0;
+  width: 188px;
+  height: 19px;
 }
 
 .categoryInfo {
@@ -128,7 +156,7 @@
     padding: 24px 16px;
     margin: 0 auto;
   }
-  
+
   .chartAndListWrapper {
     flex-direction: column;
     gap: 24px;
@@ -138,5 +166,14 @@
   .resultsList {
     width: 100%;
     height: auto;
+    position: static;
+    transform: none;
+    left: auto;
+    padding-right: 0;
+  }
+
+  .categoryItem {
+    width: 266px;
+    height: 19px;
   }
 }

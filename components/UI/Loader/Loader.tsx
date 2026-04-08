@@ -1,7 +1,7 @@
 'use client';
 
 import { TailSpin } from 'react-loading-icons';
-import styles from './Loader.module.css';
+import css from './Loader.module.css';
 
 type LoaderProps = {
   label?: string;
@@ -19,8 +19,8 @@ export default function Loader({
   const Wrapper = overlay ? 'div' : 'span';
 
   return (
-    <Wrapper className={overlay ? styles.overlay : undefined}>
-      <div className={styles.card}>
+    <Wrapper className={overlay ? css.overlay : undefined}>
+      <div className={css.card}>
         <TailSpin
           stroke={color}
           strokeWidth={3}
@@ -28,9 +28,9 @@ export default function Loader({
           width={size}
           height={size}
           aria-label={label}
-          className={styles.spinner}
+          className={css.spinner}
         />
-        <p className={styles.label}>{label}</p>
+        <p className={css.label}>{label}</p>
       </div>
     </Wrapper>
   );

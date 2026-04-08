@@ -1,6 +1,6 @@
 'use client';
 
-import styles from './Skeleton.module.css';
+import css from './Skeleton.module.css';
 
 type SkeletonProps = {
   width?: number | string;
@@ -17,7 +17,7 @@ export default function Skeleton({
 }: SkeletonProps) {
   return (
     <span
-      className={`${styles.skeleton}${className ? ` ${className}` : ''}`}
+      className={`${css.skeleton}${className ? ` ${className}` : ''}`}
       style={{ width, height, borderRadius: radius }}
       aria-hidden
     />
