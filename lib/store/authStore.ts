@@ -1,16 +1,36 @@
-﻿// Zustand-стор для флагов аутентификации и статусов.
-import { create } from 'zustand';
+﻿import { create } from 'zustand';
+import { CurrentUserResponse } from '@/types/user';
 
 interface AuthState {
+  user: CurrentUserResponse | null;
   isAuthenticated: boolean;
-  setIsAuthenticated: (value: boolean) => void;
-  loginSuccess: () => void;
-  logoutSuccess: () => void;
+  isInitialized: boolean;
+
+  setUser: (user: CurrentUserResponse) => void;
+  logout: () => void;
+  setInitialized: (value: boolean) => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>(set => ({
+  user: null,
   isAuthenticated: false,
-  setIsAuthenticated: (value) => set({ isAuthenticated: value }),
-  loginSuccess: () => set({ isAuthenticated: true }),
-  logoutSuccess: () => set({ isAuthenticated: false }),
+  isInitialized: false,
+
+  setUser: user =>
+    set({
+      user,
+      isAuthenticated: true,
+      isInitialized: true,
+    }),
+
+  logout: () =>
+    set({
+      user: null,
+      isAuthenticated: false,
+    }),
+
+  setInitialized: value =>
+    set({
+      isInitialized: value,
+    }),
 }));

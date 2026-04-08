@@ -2,9 +2,9 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { getTransactions } from '@/lib/api/transactionsApi';
 import { queryKeys } from '@/lib/constants/queryKeys';
 import type { TransactionType } from '@/types/sharedTypes';
+import { getTransactions } from '../api/clientApi';
 
 interface UseTransactionsParams {
   type: TransactionType;
@@ -12,11 +12,14 @@ interface UseTransactionsParams {
   search?: string;
 }
 
-export const useTransactions = ({ type, date, search }: UseTransactionsParams) => {
+export const useTransactions = ({
+  type,
+  date,
+  search,
+}: UseTransactionsParams) => {
   return useQuery({
     queryKey: queryKeys.transactions(type, { date, search }),
     queryFn: () => getTransactions(type, { date, search }),
     enabled: Boolean(type),
   });
 };
-

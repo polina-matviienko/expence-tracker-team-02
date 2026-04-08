@@ -1,8 +1,12 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createCategory, updateCategory, deleteCategory } from '@/lib/api/categoriesApi';
 import { queryKeys } from '@/lib/constants/queryKeys';
+import {
+  createCategory,
+  deleteCategory,
+  updateCategory,
+} from '../api/clientApi';
 
 export const useCreateCategory = () => {
   const queryClient = useQueryClient();
@@ -17,7 +21,7 @@ export const useCreateCategory = () => {
 export const useUpdateCategory = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, categoryName }: { id: string; categoryName: string }) => 
+    mutationFn: ({ id, categoryName }: { id: string; categoryName: string }) =>
       updateCategory(id, { categoryName }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.categories });

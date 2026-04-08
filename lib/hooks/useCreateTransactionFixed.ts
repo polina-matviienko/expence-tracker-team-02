@@ -1,8 +1,8 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createTransaction } from '@/lib/api/transactionsApi';
 import { queryKeys } from '@/lib/constants/queryKeys';
+import { createTransaction } from '../api/clientApi';
 
 export const useCreateTransaction = () => {
   const queryClient = useQueryClient();

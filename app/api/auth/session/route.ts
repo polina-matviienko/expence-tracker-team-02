@@ -1,22 +1,55 @@
-﻿// GET /api/auth/session -> прокси обновления сессии.
-import { NextRequest, NextResponse } from 'next/server';
-import { applySetCookieHeader, proxyRequest } from '@/lib/api/serverProxy';
+import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import { parse } from 'cookie';
+import { isAxiosError } from 'axios';
+import { logErrorResponse } from '../../_utils/utils';
+import { api } from '../../api';
 
-export async function GET(req: NextRequest) {
-  const cookie = req.headers.get('cookie') || '';
+export async function GET() {
+  try {
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get('accessToken')?.value;
+    const refreshToken = cookieStore.get('refreshToken')?.value;
 
-  const { status, data, setCookie } = await proxyRequest(
-    '/auth/session',
-    {
-      method: 'GET',
-    },
-    cookie
-  );
+    if (accessToken) {
+      return NextResponse.json({ success: true });
+    }
 
-  const response =
-    status === 204
-      ? new NextResponse(null, { status })
-      : NextResponse.json(data, { status });
+    if (refreshToken) {
+      const apiRes = await api.get('/auth/session', {
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+      });
 
-  return applySetCookieHeader(response, setCookie);
+      const setCookie = apiRes.headers['set-cookie'];
+
+      if (setCookie) {
+        const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
+        for (const cookieStr of cookieArray) {
+          const parsed = parse(cookieStr);
+
+          const options = {
+            expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
+            path: parsed.Path,
+            maxAge: Number(parsed['Max-Age']),
+          };
+
+          if (parsed.accessToken)
+            cookieStore.set('accessToken', parsed.accessToken, options);
+          if (parsed.refreshToken)
+            cookieStore.set('refreshToken', parsed.refreshToken, options);
+        }
+        return NextResponse.json({ success: true }, { status: 200 });
+      }
+    }
+    return NextResponse.json({ success: false }, { status: 200 });
+  } catch (error) {
+    if (isAxiosError(error)) {
+      logErrorResponse(error.response?.data);
+      return NextResponse.json({ success: false }, { status: 200 });
+    }
+    logErrorResponse({ message: (error as Error).message });
+    return NextResponse.json({ success: false }, { status: 200 });
+  }
 }

@@ -1,17 +1,41 @@
-﻿// POST /api/auth/logout -> прокси логаута на внешний бэк.
-import { NextRequest, NextResponse } from 'next/server';
-import { proxyRequest } from '@/lib/api/serverProxy';
+import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import { isAxiosError } from 'axios';
+import { logErrorResponse } from '../../_utils/utils';
+import { api } from '../../api';
 
-export async function POST(req: NextRequest) {
-  const cookie = req.headers.get('cookie') || '';
+export async function POST() {
+  try {
+    const cookieStore = await cookies();
 
-  const { status } = await proxyRequest(
-    '/auth/logout',
-    {
-      method: 'POST',
-    },
-    cookie
-  );
+    const accessToken = cookieStore.get('accessToken')?.value;
+    const refreshToken = cookieStore.get('refreshToken')?.value;
 
-  return new NextResponse(null, { status });
+    await api.post('/auth/logout', null, {
+      headers: {
+        Cookie: `accessToken=${accessToken}; refreshToken=${refreshToken}`,
+      },
+    });
+
+    cookieStore.delete('accessToken');
+    cookieStore.delete('refreshToken');
+
+    return NextResponse.json(
+      { message: 'Logged out successfully' },
+      { status: 200 }
+    );
+  } catch (error) {
+    if (isAxiosError(error)) {
+      logErrorResponse(error.response?.data);
+      return NextResponse.json(
+        { error: error.message, response: error.response?.data },
+        { status: error.status || 500 }
+      );
+    }
+    logErrorResponse({ message: (error as Error).message });
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
+  }
 }

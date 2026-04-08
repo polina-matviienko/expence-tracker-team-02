@@ -1,24 +1,31 @@
-﻿// Хелпер чтения/записи auth и user состояния из zustand.
-import { useAuthStore } from '@/store/authStore';
-import { useUserStore } from '@/store/userStore';
+﻿// Хелпер для читання/запису auth та user стану з zustand.
 
-export const useAuth = () => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const setIsAuthenticated = useAuthStore((state) => state.setIsAuthenticated);
-  const loginSuccess = useAuthStore((state) => state.loginSuccess);
-  const logoutSuccess = useAuthStore((state) => state.logoutSuccess);
+import type { CurrentUserResponse } from '@/types/user';
+import { useAuthStore } from '../store/authStore';
 
-  const user = useUserStore((state) => state.user);
-  const setUser = useUserStore((state) => state.setUser);
-  const clearUser = useUserStore((state) => state.clearUser);
+interface UseAuthReturn {
+  user: CurrentUserResponse | null;
+  isAuthenticated: boolean;
+  isInitialized: boolean;
+  setUser: (user: CurrentUserResponse) => void;
+  logout: () => void;
+  setInitialized: (value: boolean) => void;
+}
+
+export const useAuth = (): UseAuthReturn => {
+  const user = useAuthStore(state => state.user);
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+  const isInitialized = useAuthStore(state => state.isInitialized);
+  const setUser = useAuthStore(state => state.setUser);
+  const logout = useAuthStore(state => state.logout);
+  const setInitialized = useAuthStore(state => state.setInitialized);
 
   return {
-    isAuthenticated,
-    setIsAuthenticated,
-    loginSuccess,
-    logoutSuccess,
     user,
+    isAuthenticated,
+    isInitialized,
     setUser,
-    clearUser,
+    logout,
+    setInitialized,
   };
 };
