@@ -16,8 +16,19 @@ export async function proxy(request: NextRequest) {
   const isPublic = publicRoutes.some(route => pathname.startsWith(route));
   const isPrivate = privateRoutes.some(route => pathname.startsWith(route));
 
-  if (accessToken && isPublic) {
-    return NextResponse.redirect(new URL('/', request.url));
+  if ((accessToken || refreshToken) && isPublic) {
+    try {
+      const response = await checkSessionServer();
+      if (response.status === 200) {
+        return NextResponse.redirect(new URL('/', request.url));
+      }
+    } catch (error) {
+      console.error('Session validation failed:', error);
+      const res = NextResponse.next();
+      res.cookies.delete('accessToken');
+      res.cookies.delete('refreshToken');
+      return res;
+    }
   }
 
   if (!accessToken && refreshToken) {

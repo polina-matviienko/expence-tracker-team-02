@@ -1,0 +1,63 @@
+.container {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 20px 20px;
+  display: flex;
+  align-items: center;
+  max-width: 246px;
+  height: 81px;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  margin-left: 12px;
+}
+.icon {
+  max-width: 36px;
+  max-height: 36px;
+  margin: auto;
+}
+.icon svg {
+  width: 36px;
+  height: 36px;
+  margin: auto;
+}
+.title {
+  color: rgba(17, 16, 28, 0.5);
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+.balance {
+  color: #11101c;
+  font-weight: 700;
+  font-size: 18px;
+}
+.procentWrapper {
+  margin: auto 0 0 13;
+  background-color: rgba(2, 177, 90, 0.12);
+  color: #02b15a;
+  font-size: 12px;
+  font-weight: 400;
+  padding: 4px 8px;
+  border-radius: 13px;
+  /* stroke:; */
+}
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 303px;
+    height: 121px;
+    padding: 33px 23px;
+  }
+  .title {
+    margin-bottom: 7px;
+    font-size: 16px;
+  }
+  .balance {
+    font-size: 24px;
+  }
+  .icon svg {
+    width: 43px;
+    height: 43px;
+  }
+}
