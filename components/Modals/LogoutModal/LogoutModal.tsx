@@ -3,8 +3,8 @@ import Button from '@/components/UI/Button/Button';
 import Modal from '../Modal/Modal';
 import css from './LogoutModal.module.css';
 import { useModal } from '@/lib/hooks/use-modal-store';
-import { logout } from '@/lib/api/authApi';
 import toast from 'react-hot-toast';
+import { logout } from '@/lib/api/clientApi';
 
 function LogoutModal() {
   const onClose = useModal().onClose;

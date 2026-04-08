@@ -2,15 +2,16 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createTransaction } from '@/lib/api/transactionsApi';
 import { queryKeys } from '@/lib/constants/queryKeys';
 import type { CreateTransactionRequest } from '@/types/transaction';
+import { createTransaction } from '../api/clientApi';
 
 export const useCreateTransaction = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: CreateTransactionRequest) => createTransaction(payload),
+    mutationFn: (payload: CreateTransactionRequest) =>
+      createTransaction(payload),
     onSuccess: async (_, variables) => {
       await queryClient.invalidateQueries({
         queryKey: queryKeys.transactions(variables.type),

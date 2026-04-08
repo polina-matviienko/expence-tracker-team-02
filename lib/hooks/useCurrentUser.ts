@@ -1,45 +1,46 @@
-// Получение текущего юзера и синхронизация auth/user стора.
+// Отримання поточного користувача та синхронізація auth стору.
 'use client';
 
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getCurrentUser } from '@/lib/api/usersApi';
 import { queryKeys } from '@/lib/constants/queryKeys';
 import { useAuthStore } from '@/lib/store/authStore';
-import { useUserStore } from '@/lib/store/userStore';
-
+import type { CurrentUserResponse } from '@/types/user';
 
 export const useCurrentUser = () => {
-  const setUser = useUserStore((state) => state.setUser);
-  const clearUser = useUserStore((state) => state.clearUser);
-  const setIsAuthenticated = useAuthStore((state) => state.setIsAuthenticated);
+  const setUser = useAuthStore(state => state.setUser);
+  const logout = useAuthStore(state => state.logout);
 
   const query = useQuery({
     queryKey: queryKeys.currentUser,
-    queryFn: () => Promise.resolve({
-      name: 'Test User',
-      email: 'test@example.com',
-      avatarUrl: '',
-      transactionsTotal: {
-        incomes: 5000.00,
-        expenses: 1250.00
-      }
-    }),
+    queryFn: () =>
+      Promise.resolve<CurrentUserResponse>({
+        _id: '123',
+        name: 'Test User',
+        email: 'test@example.com',
+        avatarUrl: '',
+        currency: 'usd',
+        categories: {
+          incomes: [],
+          expenses: [],
+        },
+        transactionsTotal: {
+          incomes: 5000.0,
+          expenses: 1250.0,
+        },
+      }),
     retry: false,
   });
-
 
   useEffect(() => {
     if (query.isSuccess && query.data) {
       setUser(query.data);
-      setIsAuthenticated(true);
     }
 
     if (query.isError) {
-      clearUser();
-      setIsAuthenticated(false);
+      logout();
     }
-  }, [query.isSuccess, query.isError, query.data, setUser, clearUser, setIsAuthenticated]);
+  }, [query.isSuccess, query.isError, query.data, setUser, logout]);
 
   return query;
 };

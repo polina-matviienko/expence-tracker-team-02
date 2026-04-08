@@ -1,7 +1,8 @@
-﻿// Axios-инстанс для клиентских запросов к прокси /api.
-import axios from 'axios';
+﻿import axios from 'axios';
 
-export const api = axios.create({
-  baseURL: '/api',
+const baseURL = `${process.env.NEXT_PUBLIC_API_URL}/api`;
+
+export const nextServer = axios.create({
+  baseURL,
   withCredentials: true,
 });

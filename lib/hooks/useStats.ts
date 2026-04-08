@@ -2,8 +2,8 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { getCurrentMonthStats } from '@/lib/api/statsApi';
 import { queryKeys } from '@/lib/constants/queryKeys';
+import { getCurrentMonthStats } from '../api/clientApi';
 
 export const useStats = () => {
   return useQuery({
@@ -11,4 +11,3 @@ export const useStats = () => {
     queryFn: getCurrentMonthStats,
   });
 };
-

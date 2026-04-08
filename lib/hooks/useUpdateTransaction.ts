@@ -2,10 +2,10 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateTransaction } from '@/lib/api/transactionsApi';
 import { queryKeys } from '@/lib/constants/queryKeys';
 import type { TransactionType } from '@/types/sharedTypes';
 import type { UpdateTransactionRequest } from '@/types/transaction';
+import { updateTransaction } from '../api/clientApi';
 
 interface UpdateTransactionPayload {
   type: TransactionType;
@@ -28,4 +28,3 @@ export const useUpdateTransaction = () => {
     },
   });
 };
-

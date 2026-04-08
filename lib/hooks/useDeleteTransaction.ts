@@ -2,9 +2,9 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteTransaction } from '@/lib/api/transactionsApi';
 import { queryKeys } from '@/lib/constants/queryKeys';
 import type { TransactionType } from '@/types/sharedTypes';
+import { deleteTransaction } from '../api/clientApi';
 
 interface DeleteTransactionPayload {
   id: string;
@@ -15,7 +15,8 @@ export const useDeleteTransaction = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id }: DeleteTransactionPayload) => deleteTransaction(id),
+    mutationFn: ({ id, type }: DeleteTransactionPayload) =>
+      deleteTransaction(type, id),
     onSuccess: async (_, variables) => {
       await queryClient.invalidateQueries({
         queryKey: queryKeys.transactions(variables.type),

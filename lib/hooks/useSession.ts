@@ -2,10 +2,10 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { refreshSession } from '@/lib/api/authApi';
+import { checkSessionServer } from '../api/serverApi';
 
 export const useSession = () => {
   return useMutation({
-    mutationFn: refreshSession,
+    mutationFn: checkSessionServer,
   });
 };

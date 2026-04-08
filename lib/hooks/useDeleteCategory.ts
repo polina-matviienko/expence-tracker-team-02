@@ -2,8 +2,8 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteCategory } from '@/lib/api/categoriesApi';
 import { queryKeys } from '@/lib/constants/queryKeys';
+import { deleteCategory } from '../api/clientApi';
 
 export const useDeleteCategory = () => {
   const queryClient = useQueryClient();

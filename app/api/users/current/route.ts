@@ -1,18 +1,32 @@
-﻿// GET /api/users/current -> прокси текущего пользователя.
-import { NextRequest, NextResponse } from 'next/server';
-import { proxyRequest } from '@/lib/api/serverProxy';
-import type { CurrentUserResponse } from '@/types/user';
+import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import { isAxiosError } from 'axios';
+import { logErrorResponse } from '../../_utils/utils';
+import { api } from '../../api';
 
-export async function GET(req: NextRequest) {
-  const cookie = req.headers.get('cookie') || '';
+export async function GET() {
+  try {
+    const cookieStore = await cookies();
 
-  const { status, data } = await proxyRequest<CurrentUserResponse>(
-    '/users/current',
-    {
-      method: 'GET',
-    },
-    cookie
-  );
+    const res = await api.get('/users/current', {
+      headers: {
+        Cookie: cookieStore.toString(),
+      },
+    });
 
-  return NextResponse.json(data, { status });
+    return NextResponse.json(res.data, { status: res.status });
+  } catch (error) {
+    if (isAxiosError(error)) {
+      logErrorResponse(error.response?.data);
+      return NextResponse.json(
+        { error: error.message, response: error.response?.data },
+        { status: error.status || 500 }
+      );
+    }
+    logErrorResponse({ message: (error as Error).message });
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
+  }
 }
