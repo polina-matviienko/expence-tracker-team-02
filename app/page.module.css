@@ -1,0 +1,70 @@
+﻿.main {
+}
+.content {
+  margin: 61px 0 30px 0;
+}
+.log {
+  color: rgba(250, 250, 250, 0.4);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  padding-bottom: 10px;
+}
+.title {
+  font-size: 32px;
+  color: #fafafa;
+  font-weight: 400;
+  padding-bottom: 14px;
+}
+.accent {
+  color: #0ef387;
+  text-decoration: underline;
+}
+.description {
+  color: rgba(250, 250, 250, 0.4);
+  font-weight: 400;
+  font-size: 14px;
+}
+.bgImage {
+  position: relative;
+}
+
+@media screen and (min-width: 768px) {
+  .content {
+    margin: 98px 0 40px 0;
+  }
+  .title {
+    font-size: 56px;
+    padding-bottom: 20px;
+    max-width: 575px;
+  }
+  .description {
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    max-width: 533px;
+  }
+  .decorativeWrapper {
+    position: absolute;
+    top: 315px;
+    left: -16px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .deskContainer {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-top: 76px;
+  }
+  .bgImage {
+    margin-right: 54px;
+  }
+  .content {
+    margin: 0;
+  }
+  .decorativeWrapper {
+    position: absolute;
+    top: 315px;
+    left: -50px;
+  }
+}

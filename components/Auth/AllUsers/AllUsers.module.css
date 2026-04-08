@@ -1,0 +1,33 @@
+.tab {
+  display: none;
+}
+@media screen and (min-width: 1440px) {
+  .tab {
+    display: flex;
+    max-width: 420px;
+  }
+  .avatars {
+    display: flex;
+  }
+  .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 100%;
+  }
+  .info {
+    padding-left: 32px;
+  }
+  .count {
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--white);
+    padding-bottom: 12px;
+  }
+  .text {
+    font-size: 16px;
+    color: #cbd5e1;
+    line-height: 1.5;
+    color: rgba(250, 250, 250, 0.4);
+    font-weight: 400;
+  }
+}
