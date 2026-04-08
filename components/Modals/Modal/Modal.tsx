@@ -52,14 +52,14 @@ const Modal = ({
         <div className={styles.header}>
           <button
             onClick={onClose}
-            className={styles.closeButton}
-            aria-label="Close"
-          >
-            <svg className={styles.xIcon} width="20" height="20">
-              <use href="icons.svg#icon-x"></use>
-            </svg>
-          </button>
-        </div>
+          className={styles.closeButton}
+          aria-label="Close"
+        >
+          <svg className={styles.xIcon} width="20" height="20">
+            <use href="/icons.svg#icon-x"></use>
+          </svg>
+        </button>
+      </div>
 
         <div className={styles.content}>{children}</div>
       </div>

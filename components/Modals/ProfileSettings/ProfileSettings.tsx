@@ -61,16 +61,6 @@ const ProfileSettings = () => {
   return (
     <Modal onClose={onClose}>
       <div ref={cardRef} className={css.card} onClick={handleCardClick}>
-        <button
-          type="button"
-          className={css.closeBtn}
-          aria-label="Close"
-          onClick={onClose}
-        >
-          <svg width="20" height="20">
-            <use href="/icons.svg#icon-x" />
-          </svg>
-        </button>
         <h2 className={css.title}>Profile settings</h2>
 
         <div className={css.avatarSection}>
