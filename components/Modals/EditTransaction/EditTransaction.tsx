@@ -133,7 +133,15 @@ export default function EditTransaction({
                 required
               />
               <span className={css.inputIcon}>
-                <CalendarIcon />
+                <svg
+                  width={16}
+                  height={16}
+                  className={css.dateTimeIcon}
+                  stroke="currentColor"
+                  fill="none"
+                >
+                  <use href="/icons.svg#icon-calendar" />
+                </svg>
               </span>
             </div>
             {formik.touched.date && formik.errors.date && (
@@ -161,7 +169,15 @@ export default function EditTransaction({
                 required
               />
               <span className={css.inputIcon}>
-                <ClockIcon />
+                <svg
+                  width={16}
+                  height={16}
+                  className={css.dateTimeIcon}
+                  stroke="currentColor"
+                  fill="none"
+                >
+                  <use href="/icons.svg#icon-clock" />
+                </svg>
               </span>
             </div>
             {formik.touched.time && formik.errors.time && (
