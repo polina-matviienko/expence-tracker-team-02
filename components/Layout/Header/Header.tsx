@@ -7,6 +7,7 @@ import TransactionsHistoryNav from '../TransactionsHistoryNav/TransactionsHistor
 import UserBarBtn from '../UserBarBtn/UserBarBtn';
 import BurgerMenu from '../BurgerMenu/BurgerMenu';
 import css from './Header.module.css';
+import Link from 'next/link';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,6 +33,11 @@ export default function Header() {
         <div className="container">
           <div className={css.headerContent}>
             <Logo />
+
+            {/*ТИМЧАСОВА НАВІГАЦІЯ ДЛЯ ЗРУЧНОСТІ */}
+
+            <Link href="/login">Log In</Link>
+            <Link href="/register">Register</Link>
 
             {isAuthenticated && (
               <>

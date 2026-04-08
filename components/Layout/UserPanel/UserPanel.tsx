@@ -1,5 +1,6 @@
 'use client';
 
+import { useModal } from '@/lib/hooks/use-modal-store';
 import css from './UserPanel.module.css';
 
 export const closeUserPanel = (onClose: () => void) => {
@@ -11,6 +12,13 @@ interface UserPanelProps {
 }
 
 const UserPanel = ({ onClose }: UserPanelProps) => {
+  const { onOpen } = useModal();
+
+  const handleLogout = () => {
+    onOpen('LOGOUT_CONFIRM');
+    closeUserPanel(onClose);
+  };
+
   return (
     <div className={css.panelContainer}>
       <button
@@ -24,11 +32,7 @@ const UserPanel = ({ onClose }: UserPanelProps) => {
         Profile settings
       </button>
 
-      <button
-        type="button"
-        className={css.panelBtn}
-        onClick={() => closeUserPanel(onClose)}
-      >
+      <button type="button" className={css.panelBtn} onClick={handleLogout}>
         <svg className={css.icon} width="16" height="16">
           <use href="/icons.svg#icon-log-out" />
         </svg>

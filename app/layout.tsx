@@ -5,7 +5,7 @@ import './globals.css';
 import Header from '@/components/Layout/Header/Header';
 import { ModalProvider } from '@/providers/modal-provider';
 import Providers from '@/components/Layout/Providers';
-import TestPage from '@/components/TestPage/TestPage';
+import Link from 'next/link';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -30,7 +30,7 @@ export default function RootLayout({
       <body className={`${inter.className} ${inter.variable}`}>
         <Providers>
           <Header />
-          <TestPage />
+
           <ModalProvider />
           {children}
         </Providers>
