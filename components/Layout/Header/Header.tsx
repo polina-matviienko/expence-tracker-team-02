@@ -6,6 +6,7 @@ import TransactionsHistoryNav from '../TransactionsHistoryNav/TransactionsHistor
 import UserBarBtn from '../UserBarBtn/UserBarBtn';
 import BurgerMenu from '../BurgerMenu/BurgerMenu';
 import css from './Header.module.css';
+import Link from 'next/link';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,44 +15,46 @@ export default function Header() {
 
   return (
     <>
-    <header className={headerClasses}>
-      <div className="container">
-        <div className={css.headerContent}>
-          <Logo />
+      <header className={headerClasses}>
+        <div className="container">
+          <div className={css.headerContent}>
+            <Logo />
 
-          {isAuthenticated && (
-            <>
-              <nav
-                className={css.navigation}
-                aria-label="Main transaction navigation"
-              >
-                <TransactionsHistoryNav />
-              </nav>
+            {/*ТИМЧАСОВА НАВІГАЦІЯ ДЛЯ ЗРУЧНОСТІ */}
 
-              <div className={css.userBarBtn}>
-                <UserBarBtn />
-              </div>
+            <Link href="/login">Log In</Link>
+            <Link href="/register">Register</Link>
 
-              <button
-                className={css.burgerBtn}
-                type="button"
-                aria-label="Open menu"
-                onClick={() => setIsMenuOpen(true)}
-              >
-                <svg className={css.burgerIcon}>
-                  <use href="/icons.svg#icon-burger-menu" />
-                </svg>
-              </button>
+            {isAuthenticated && (
+              <>
+                <nav
+                  className={css.navigation}
+                  aria-label="Main transaction navigation"
+                >
+                  <TransactionsHistoryNav />
+                </nav>
+
+                <div className={css.userBarBtn}>
+                  <UserBarBtn />
+                </div>
+
+                <button
+                  className={css.burgerBtn}
+                  type="button"
+                  aria-label="Open menu"
+                  onClick={() => setIsMenuOpen(true)}
+                >
+                  <svg className={css.burgerIcon}>
+                    <use href="/icons.svg#icon-burger-menu" />
+                  </svg>
+                </button>
               </>
-          )}
+            )}
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
 
-    <BurgerMenu
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-      />
+      <BurgerMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     </>
   );
 }

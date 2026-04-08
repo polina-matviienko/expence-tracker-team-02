@@ -4,7 +4,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/constants/queryKeys';
 import type { TransactionType } from '@/types/sharedTypes';
-import { getTransactions } from '../api/clientApi';
+import { getTransactions } from '../api/serverApi';
 
 interface UseTransactionsParams {
   type: TransactionType;
