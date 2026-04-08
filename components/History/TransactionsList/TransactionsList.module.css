@@ -1,0 +1,262 @@
+.tableWrap {
+  overflow-x: auto;
+  overflow-y: auto;
+  width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(250, 250, 250, 0.2) transparent;
+}
+
+.tableWrap::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tableWrap::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tableWrap::-webkit-scrollbar-thumb {
+  background: rgba(250, 250, 250, 0.2);
+  border-radius: 12px;
+  min-height: 150px;
+}
+
+.tableWrap::-webkit-scrollbar-thumb:hover {
+  background: rgba(250, 250, 250, 0.3);
+}
+
+.table {
+  min-width: 100%;
+  width: max-content;
+}
+
+.headRow,
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  justify-content: flex-start;
+}
+
+.headRow {
+  color: rgba(250, 250, 250, 0.5);
+  font-size: 12px;
+  margin-bottom: 12px;
+  width: 100%;
+  background: #121214;
+  border-radius: 12px;
+  min-height: 52px;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.row {
+  border-radius: 12px;
+  font-size: 14px;
+  padding: 12px 20px;
+  width: 100%;
+  box-sizing: border-box;
+  background: #171719;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.headRow > span,
+.row > span {
+  min-width: 0;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.headRow > span:nth-child(1),
+.row > span:nth-child(1) {
+  width: 70px;
+}
+
+.headRow > span:nth-child(2),
+.row > span:nth-child(2) {
+  width: 70px;
+}
+
+.headRow > span:nth-child(3),
+.row > span:nth-child(3) {
+  width: 90px;
+}
+
+.headRow > span:nth-child(4),
+.row > span:nth-child(4) {
+  width: 60px;
+}
+
+.headRow > span:nth-child(5),
+.row > span:nth-child(5) {
+  width: 80px;
+}
+
+.iconButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 40px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editButton {
+  background-color: #0ef387;
+}
+
+.deleteButton {
+  background-color: #0c0d0d;
+}
+
+.desktopButtonText {
+  display: none;
+}
+
+.editIcon {
+  stroke: #0c0d0d;
+  fill: transparent;
+}
+
+.deleteIcon {
+  stroke: #fafafa;
+  fill: transparent;
+}
+
+.income {
+  color: #0ef387;
+}
+
+.expense {
+  color: #ff868d;
+}
+
+.state {
+  color: rgba(250, 250, 250, 0.6);
+}
+
+.sumValue {
+  color: #fafafa;
+}
+
+@media (min-width: 767.98px) {
+  .tableWrap {
+    height: auto;
+    flex: 1;
+    min-height: 0;
+    overflow-x: hidden;
+  }
+
+  .table {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .headRow {
+    font-size: 16px;
+  }
+
+  .row {
+    font-size: 20px;
+  }
+
+  .headRow > span:nth-child(1),
+  .row > span:nth-child(1) {
+    width: 95px;
+  }
+
+  .headRow > span:nth-child(2),
+  .row > span:nth-child(2) {
+    width: 95px;
+  }
+
+  .headRow > span:nth-child(3),
+  .row > span:nth-child(3) {
+    width: 95px;
+  }
+
+  .headRow > span:nth-child(4),
+  .row > span:nth-child(4) {
+    width: 80px;
+  }
+
+  .headRow > span:nth-child(5),
+  .row > span:nth-child(5) {
+    width: 120px;
+  }
+
+  .iconButton {
+    width: 44px;
+    height: 44px;
+    padding: 14px;
+  }
+}
+
+@media (min-width: 1439.98px) {
+  .iconButton {
+    width: auto;
+    min-width: 119px;
+    height: 47px;
+    padding: 14px 32px;
+    gap: 10px;
+  }
+
+  .desktopButtonText {
+    display: inline;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: inherit;
+  }
+
+  .editButton {
+    color: #0c0d0d;
+  }
+
+  .deleteButton {
+    color: #fafafa;
+  }
+
+  .headRow > span:nth-child(1),
+  .row > span:nth-child(1) {
+    width: 180px;
+  }
+
+  .headRow > span:nth-child(2),
+  .row > span:nth-child(2) {
+    width: 200px;
+  }
+
+  .headRow > span:nth-child(3),
+  .row > span:nth-child(3) {
+    width: 180px;
+  }
+
+  .headRow > span:nth-child(4),
+  .row > span:nth-child(4) {
+    width: 110px;
+  }
+
+  .headRow > span:nth-child(5),
+  .row > span:nth-child(5) {
+    width: 180px;
+  }
+}
