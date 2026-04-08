@@ -4,8 +4,8 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: var(--overlay-color);
-  backdrop-filter: blur(4px);
+  background-color: transparent;
+  backdrop-filter: none;
   z-index: 1000;
   display: flex;
   justify-content: center;
@@ -14,22 +14,22 @@
 }
 
 .modal {
-  background-color: var(--component-bg-color);
+  background-color: transparent;
   border-radius: 30px;
-  border: 1px solid rgba(250, 250, 250, 0.1);
+  border: none;
 
-  padding: 20px;
+  padding: 0;
 
   position: relative;
 
-  min-height: 260px;
+  min-height: 0;
 
-  overflow-y: auto;
+  overflow-y: visible;
   animation: slideUp 0.3s ease-out;
 }
 @media only screen and (min-width: 768px) {
   .modal {
-    padding: 40px;
+    padding: 0;
     min-width: 500px;
   }
 }
