@@ -9,9 +9,17 @@ export const useCreateTransaction = () => {
 
   return useMutation({
     mutationFn: createTransaction,
-    onSuccess: () => {
+    onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.currentUser });
-      queryClient.invalidateQueries({ queryKey: queryKeys.stats });
+      
+      // Only invalidate current month's stats if the transaction is truly for the current month
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
+      const txDate = new Date(variables.date);
+      
+      if (txDate.getMonth() === currentMonth && txDate.getFullYear() === currentYear) {
+        queryClient.invalidateQueries({ queryKey: queryKeys.stats });
+      }
     },
   });
 };

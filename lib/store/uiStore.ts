@@ -7,6 +7,7 @@ interface UiState {
   isUserSettingsModalOpen: boolean;
   isCategoriesModalOpen: boolean;
   isEditTransactionModalOpen: boolean;
+  selectedCategoryId: string;
   selectedCategoryName: string;
   transactionType: 'incomes' | 'expenses';
   openBurgerMenu: () => void;
@@ -21,7 +22,7 @@ interface UiState {
   closeCategoriesModal: () => void;
   openEditTransactionModal: () => void;
   closeEditTransactionModal: () => void;
-  setSelectedCategoryName: (name: string) => void;
+  setSelectedCategory: (id: string, name: string) => void;
   setTransactionType: (type: 'incomes' | 'expenses') => void;
 }
 
@@ -32,6 +33,7 @@ export const useUiStore = create<UiState>((set) => ({
   isUserSettingsModalOpen: false,
   isCategoriesModalOpen: false,
   isEditTransactionModalOpen: false,
+  selectedCategoryId: '',
   selectedCategoryName: '',
   transactionType: 'expenses',
 
@@ -54,7 +56,7 @@ export const useUiStore = create<UiState>((set) => ({
   openEditTransactionModal: () => set({ isEditTransactionModalOpen: true }),
   closeEditTransactionModal: () => set({ isEditTransactionModalOpen: false }),
 
-  setSelectedCategoryName: (name: string) => set({ selectedCategoryName: name }),
+  setSelectedCategory: (id: string, name: string) => set({ selectedCategoryId: id, selectedCategoryName: name }),
   setTransactionType: (type: 'incomes' | 'expenses') => set({ transactionType: type }),
 }));
 

@@ -3,7 +3,6 @@
 import { useCurrentUser } from '@/lib/hooks/useCurrentUser';
 import styles from './TransactionsTotalAmount.module.css';
 import { IncomeIndicatorIcon, ExpenseIndicatorIcon } from '@/components/UI/Icons/Icons';
-import Loader from '@/components/UI/Loader/Loader';
 import Skeleton from '@/components/UI/Skeleton/Skeleton';
 
 export default function TransactionsTotalAmount() {
@@ -16,6 +15,17 @@ export default function TransactionsTotalAmount() {
     return new Intl.NumberFormat('en-US', {
       minimumFractionDigits: 2,
     }).format(amount);
+  };
+
+  const renderAmount = (amount: number) => {
+    if (!amount || amount === 0) {
+      return (
+        <p className={styles.amount} style={{ color: 'rgba(250, 250, 250, 0.5)' }}>
+          0
+        </p>
+      );
+    }
+    return <p className={styles.amount}>₴{formatAmount(amount)}</p>;
   };
 
   if (isLoading) {
@@ -51,7 +61,7 @@ export default function TransactionsTotalAmount() {
         </div>
         <div className={styles.info}>
           <h3 className={styles.title}>Total Income</h3>
-          <p className={styles.amount}>₴{formatAmount(incomes)}</p>
+          {renderAmount(incomes)}
         </div>
       </div>
 
@@ -61,7 +71,7 @@ export default function TransactionsTotalAmount() {
         </div>
         <div className={styles.info}>
           <h3 className={styles.title}>Total Expense</h3>
-          <p className={styles.amount}>₴{formatAmount(expenses)}</p>
+          {renderAmount(expenses)}
         </div>
       </div>
     </div>
