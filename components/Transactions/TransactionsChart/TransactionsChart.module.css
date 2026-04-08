@@ -126,6 +126,11 @@
 
 .loader {
   padding: 40px;
+  border-radius: 30px;
+  width: 630px;
+  height: 302px;
+  box-sizing: border-box;
+  background: var(--component-bg-color);
   color: var(--text-secondary);
   text-align: center;
 }
@@ -147,10 +152,22 @@
     width: 704px;
     height: 302px;
   }
+
+  .loader {
+    width: 704px;
+    height: 302px;
+  }
 }
 
 @media (max-width: 767px) {
   .container {
+    width: 335px;
+    height: 471px;
+    padding: 24px 16px;
+    margin: 0 auto;
+  }
+
+  .loader {
     width: 335px;
     height: 471px;
     padding: 24px 16px;
