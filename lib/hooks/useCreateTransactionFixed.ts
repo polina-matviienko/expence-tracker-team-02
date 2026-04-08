@@ -11,6 +11,7 @@ export const useCreateTransaction = () => {
     mutationFn: createTransaction,
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.currentUser });
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
       
       // Only invalidate current month's stats if the transaction is truly for the current month
       const currentMonth = new Date().getMonth();

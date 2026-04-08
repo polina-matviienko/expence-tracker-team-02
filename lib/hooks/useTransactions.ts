@@ -1,10 +1,10 @@
-﻿// Получение списка транзакций по типу с фильтрами.
+// Получение списка транзакций по типу с фильтрами.
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/constants/queryKeys';
 import type { TransactionType } from '@/types/sharedTypes';
-import { getTransactions } from '../api/serverApi';
+import { getTransactions } from '../api/clientApi';
 
 interface UseTransactionsParams {
   type: TransactionType;
