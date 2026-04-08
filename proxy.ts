@@ -16,10 +16,6 @@ export async function proxy(request: NextRequest) {
   const isPublic = publicRoutes.some(route => pathname.startsWith(route));
   const isPrivate = privateRoutes.some(route => pathname.startsWith(route));
 
-  if (accessToken && isPublic) {
-    return NextResponse.redirect(new URL('/', request.url));
-  }
-
   if (!accessToken && refreshToken) {
     try {
       const response = await checkSessionServer();
@@ -55,6 +51,11 @@ export async function proxy(request: NextRequest) {
         }
         return res;
       }
+
+      const res = NextResponse.redirect(new URL('/login', request.url));
+      res.cookies.delete('accessToken');
+      res.cookies.delete('refreshToken');
+      return res;
     } catch (error) {
       console.error('Session refresh failed:', error);
       const res = NextResponse.redirect(new URL('/login', request.url));
@@ -62,6 +63,12 @@ export async function proxy(request: NextRequest) {
       res.cookies.delete('refreshToken');
       return res;
     }
+  }
+
+  if ((accessToken || refreshToken) && isPublic) {
+    return NextResponse.redirect(
+      new URL('/transactions/expenses', request.url)
+    );
   }
 
   if (!accessToken && isPrivate) {

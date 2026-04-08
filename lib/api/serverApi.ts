@@ -133,7 +133,7 @@ export const getCurrentMonthStatsServer = async (): Promise<
 
 //! TRANSACTIONS
 
-export const getTransactionsServer = async (
+export const getTransactions = async (
   type: TransactionType,
   params?: GetTransactionsParams
 ): Promise<TransactionItem[]> => {
@@ -141,7 +141,6 @@ export const getTransactionsServer = async (
     `/transactions/${type}`,
     {
       params,
-      headers: await getAuthHeaders(),
     }
   );
   return data;

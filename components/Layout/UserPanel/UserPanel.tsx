@@ -9,19 +9,22 @@ export const closeUserPanel = (onClose: () => void) => {
 
 interface UserPanelProps {
   onClose: () => void;
+  onBurgerClose?: () => void;
 }
 
-const UserPanel = ({ onClose }: UserPanelProps) => {
+const UserPanel = ({ onClose, onBurgerClose }: UserPanelProps) => {
   const { onOpen } = useModal();
 
   const handleProfileClick = () => {
     onOpen('PROFILE_SETTINGS');
     onClose();
+    onBurgerClose?.();
   };
 
   const handleLogout = () => {
     onOpen('LOGOUT_CONFIRM');
     closeUserPanel(onClose);
+    onBurgerClose?.();
   };
 
   return (

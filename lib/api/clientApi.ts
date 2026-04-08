@@ -134,11 +134,13 @@ export const deleteCategory = async (id: string): Promise<void> => {
 };
 
 export const getCurrentMonthStats = async (): Promise<CategoryStatItem[]> => {
-  const response = await nextServer.get<CategoryStatItem[]>(
-    '/stats/categories/current-month'
-  );
+  const response = await fetch('/api/stats/current-month');
 
-  return response.data;
+  if (!response.ok) {
+    throw new Error(`Failed to fetch stats: ${response.statusText}`);
+  }
+
+  return response.json();
 };
 
 //! Transactions

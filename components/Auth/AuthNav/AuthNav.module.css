@@ -1,0 +1,50 @@
+.nav {
+  width: 100%;
+  max-width: 420px;
+  margin-bottom: 29px;
+  margin-top: 30px;
+}
+.buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+.linkUp {
+  text-decoration: none;
+  flex: 1;
+  max-width: 139px;
+}
+.linkIn {
+  text-decoration: none;
+  flex: 1;
+  max-width: 132px;
+}
+.btn {
+  width: 100%;
+  font-size: 14px;
+  padding: 14px 24px;
+}
+@media screen and (min-width: 768px) {
+  .nav {
+    width: 100%;
+    max-width: 420px;
+    margin-bottom: 10px;
+    margin-top: 40px;
+  }
+  .buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: left;
+  }
+  .linkUp {
+    max-width: 146px;
+  }
+  .linkIn {
+    max-width: 138px;
+  }
+}
+@media screen and (min-width: 1440px) {
+  .nav {
+    margin-bottom: 140px;
+  }
+}
