@@ -4,7 +4,11 @@ import { useState } from 'react';
 import UserPanel from '../UserPanel/UserPanel';
 import css from './UserBarBtn.module.css';
 
-const UserBarBtn = () => {
+type UserBarBtnProps = {
+  onBurgerClose?: () => void;
+};
+
+const UserBarBtn = ({ onBurgerClose }: UserBarBtnProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const userName = 'Alex Rybachok';
 
@@ -38,7 +42,7 @@ const UserBarBtn = () => {
         </div>
       </button>
 
-      {isOpen && <UserPanel onClose={() => setIsOpen(false)} />}
+      {isOpen && <UserPanel onClose={() => setIsOpen(false)} onBurgerClose={onBurgerClose} />}
     </div>
   );
 };

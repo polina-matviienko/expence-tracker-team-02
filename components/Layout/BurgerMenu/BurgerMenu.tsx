@@ -51,7 +51,7 @@ export default function BurgerMenu({
       >
         <div className={css.topRow}>
           <div className={css.userBarBtn}>
-                <UserBarBtn />
+                <UserBarBtn onBurgerClose={onClose}/>
               </div>
 
           <button
