@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Modal from '../Modal/Modal';
 import { useModal } from '@/lib/hooks/use-modal-store';
 import Button from '@/components/UI/Button/Button';
@@ -23,6 +23,31 @@ const ProfileSettings = () => {
   const { onClose } = useModal();
   const [isCurrencyOpen, setCurrencyOpen] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>(currencies[0]);
+  const cardRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const modalEl = cardRef.current?.closest('.modal') as HTMLElement | null;
+    if (!modalEl) return;
+    const prevOverflow = modalEl.style.overflow;
+    modalEl.style.overflow = 'hidden';
+
+    return () => {
+      modalEl.style.overflow = prevOverflow;
+    };
+  }, []);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtml = html.style.overflowX;
+    const prevBody = body.style.overflowX;
+    html.style.overflowX = 'hidden';
+    body.style.overflowX = 'hidden';
+    return () => {
+      html.style.overflowX = prevHtml;
+      body.style.overflowX = prevBody;
+    };
+  }, []);
 
   const toggleCurrency = () => setCurrencyOpen((prev) => !prev);
 
@@ -35,7 +60,7 @@ const ProfileSettings = () => {
 
   return (
     <Modal onClose={onClose}>
-      <div className={css.card} onClick={handleCardClick}>
+      <div ref={cardRef} className={css.card} onClick={handleCardClick}>
         <button
           type="button"
           className={css.closeBtn}

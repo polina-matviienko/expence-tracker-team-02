@@ -1,14 +1,43 @@
 .card {
   display: flex;
   flex-direction: column;
-  background: var(--component-bg-color);
-  border-radius: 30px;
-  padding: 28px 20px 32px;
-  border: 1px solid var(--white-dim-01);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
-  position: relative;
-  width: 335px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  width: 100%;
+  height: auto;
   box-sizing: border-box;
+  --profile-form-max: 296px;
+  --select-width: 124px;
+  --controls-gap: 4px;
+}
+
+.localCloseBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  color: var(--white);
+  padding: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2001;
+}
+
+.localCloseBtn svg {
+  stroke: currentColor;
+  fill: none;
+}
+
+.localCloseBtn:hover,
+.localCloseBtn:focus-visible {
+  opacity: 0.7;
+}
+
+:global(.closeButton) {
+  display: none !important;
 }
 
 .title {
@@ -19,43 +48,12 @@
   margin-bottom: 28px;
 }
 
-.closeBtn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: none;
-  border: none;
-  color: var(--white);
-  opacity: 0.7;
-  transition: opacity 0.2s ease, transform 0.15s ease;
-}
-
-.closeBtn svg {
-  width: 24px;
-  height: 24px;
-  stroke: var(--white);
-  fill: none;
-}
-
-.closeBtn:hover,
-.closeBtn:focus {
-  opacity: 1;
-}
-
-.closeBtn:active {
-  transform: translateY(1px);
-}
-
-:global(.closeButton) {
-  display: none;
-}
-
 .avatarSection {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 16px;
-  margin-bottom: 28px;
+  margin-bottom: 40px;
 }
 
 .avatarRing,
@@ -68,7 +66,7 @@
 }
 
 .avatarRing {
-  background: var(--btn-grey);
+  background: var(--bg-color);
 }
 
 .avatar {
@@ -106,29 +104,31 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  width: 296px;
+  gap: 20px;
+  width: 100%;
+  max-width: var(--profile-form-max);
   margin: 0 auto;
 }
 
 .controlsRow {
   display: flex;
   align-items: center;
-  gap: 4px;
-  width: 296px;
+  gap: var(--controls-gap);
+  width: 100%;
+  max-width: var(--profile-form-max);
 }
 
 .selectWrapper {
   position: relative;
   display: inline-block;
-  width: 98px;
+  width: var(--select-width);
 }
 
 .select {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  width: 98px;
+  width: var(--select-width);
   height: 42px;
   padding: 12px 14px;
   border-radius: 12px;
@@ -137,8 +137,8 @@
   color: var(--white);
   font-size: 14px;
   line-height: 129%;
+  gap: 4px;
   outline: none;
-  gap: 6px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -168,6 +168,7 @@
   top: calc(100% + 6px);
   left: 0;
   width: 98px;
+  height: 98px;
   background: var(--bg-color);
   border: 1px solid var(--white-dim-01);
   border-radius: 15px;
@@ -180,10 +181,11 @@
 
 .optionBtn {
   width: 100%;
+  padding-left: 14px;
   text-align: left;
-  padding: 12px 14px;
   color: var(--white-dim-05);
-  font-size: 15px;
+  font-size: 14px;
+  line-height: 129%;
   background: transparent;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
@@ -200,11 +202,12 @@
 }
 
 .inputContainer {
-  width: 192px;
+  width: 100%;
+  max-width: calc(var(--profile-form-max) - var(--select-width) - var(--controls-gap));
 }
 
 .inputContainer [class*='field'] {
-  width: 192px !important;
+  width: 100% !important;
   background: transparent;
   border-radius: 12px;
   border: 1px solid var(--white-dim-04);
@@ -224,7 +227,8 @@
 }
 
 .saveBtn {
-  width: 296px;
+  width: 100%;
+  max-width: var(--profile-form-max);
   height: 45px;
   border-radius: 40px;
   font-size: 14px;
@@ -232,13 +236,14 @@
   background: var(--green-neon);
   color: var(--bg-color);
   padding: 14px 32px;
+  margin-bottom: 24px;
 }
 
 @media (min-width: 768px) {
   .card {
-    padding: 40px 40px 60px;
-    width: 500px;
-    height: 477px;
+    --profile-form-max: 420px;
+    --select-width: 124px;
+    --controls-gap: 4.5px;
   }
 
   .title {
@@ -268,42 +273,74 @@
   }
 
   .form {
-    width: 420px;
+    max-width: var(--profile-form-max);
     gap: 20px;
   }
 
   .controlsRow {
-    width: 420px;
-    gap: 4.5px;
-  }
-
-  .selectWrapper {
-    width: 124px;
+    max-width: var(--profile-form-max);
+    gap: var(--controls-gap);
   }
 
   .select {
-    width: 124px;
     height: 48px;
   }
 
   .options {
     width: 124px;
-  }
-
-  .inputContainer {
-    width: 293px;
+    height: 104px;
   }
 
   .inputContainer [class*='field'] {
-    width: 293px !important;
     height: 48px;
     padding: 12px 18px;
   }
 
   .saveBtn {
-    width: 420px;
     height: 48px;
     font-size: 16px;
-    color: var(--bg-color);
+    margin-bottom: 24px;
+  }
+}
+
+:global(.modal) {
+  background-color: var(--component-bg-color) !important;
+  border: 1px solid var(--white-dim-01) !important;
+  border-radius: 30px !important;
+  padding: 20px !important;
+  min-height: 260px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+@media (max-width: 767px) {
+  :global(.modal) {
+    width: calc(100vw - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+}
+
+:global([class*='Modal-module__'][class*='__modal']) {
+  background-color: var(--component-bg-color) !important;
+  border: 1px solid var(--white-dim-01) !important;
+  border-radius: 30px !important;
+  padding: 20px !important;
+  min-height: 260px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  max-width: calc(100vw - 24px);
+}
+
+@media (min-width: 768px) {
+  :global(.modal) {
+    padding: 40px !important;
+    min-width: 500px !important;
+  }
+
+  :global([class*='Modal-module__'][class*='__modal']) {
+    padding: 40px !important;
+    min-width: 500px !important;
   }
 }
