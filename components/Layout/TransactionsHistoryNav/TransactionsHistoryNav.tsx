@@ -5,12 +5,12 @@ const TransactionsHistoryNav = () => {
   return (
     <ul className={css.list}>
       <li>
-        <Link href="/" className={`${css.link} ${css.expenseLink}`}>
+        <Link href="/transactions/expenses" className={`${css.link} ${css.expenseLink}`}>
           All Expense
         </Link>
       </li>
       <li>
-        <Link href="/" className={`${css.link} ${css.incomeLink}`}>
+        <Link href="/transactions/incomes" className={`${css.link} ${css.incomeLink}`}>
           All Income
         </Link>
       </li>
