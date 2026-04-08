@@ -20,9 +20,15 @@
   max-width: 132px;
 }
 .btn {
-  width: 100%;
   font-size: 14px;
   padding: 14px 24px;
+  height: 45px;
+}
+.signUpBtn {
+  width: 139px;
+}
+.signInBtn {
+  width: 132px;
 }
 @media screen and (min-width: 768px) {
   .nav {
@@ -41,6 +47,15 @@
   }
   .linkIn {
     max-width: 138px;
+  }
+  .btn {
+    height: 47px;
+  }
+  .signUpBtn {
+    width: 146px;
+  }
+  .signInBtn {
+    width: 138px;
   }
 }
 @media screen and (min-width: 1440px) {
