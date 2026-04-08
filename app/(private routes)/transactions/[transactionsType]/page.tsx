@@ -34,7 +34,9 @@ export default async function TransactionsPage({
         </section>
 
         <section className={styles.formSection}>
-          <TransactionForm transactionType={transactionsType as 'incomes' | 'expenses'} />
+          <TransactionForm
+            transactionType={transactionsType as 'incomes' | 'expenses'}
+          />
         </section>
 
         <section className={styles.chartSection}>
@@ -44,5 +46,3 @@ export default async function TransactionsPage({
     </div>
   );
 }
-
-

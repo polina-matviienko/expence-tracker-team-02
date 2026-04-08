@@ -125,14 +125,18 @@ export default function CategoriesModal() {
                     onClick={() => handleSelect(cat._id, cat.categoryName)}
                     title="Select"
                   >
-                    <SelectIcon />
+                    <svg width="20" height="20" viewBox="0 0 32 32" stroke="currentColor" fill="none">
+                      <use href="/icons.svg#icon-check" />
+                    </svg>
                   </button>
                   <button
                     className={styles.editIconBtn}
                     onClick={() => handleEditInit(cat._id, cat.categoryName)}
                     title="Edit"
                   >
-                    <EditIcon />
+                    <svg width="20" height="20" viewBox="0 0 32 32" stroke="currentColor" fill="none">
+                      <use href="/icons.svg#icon-edit" />
+                    </svg>
                   </button>
                   <button
                     className={styles.deleteBtn}
@@ -140,7 +144,9 @@ export default function CategoriesModal() {
                     disabled={deleteCategoryMutation.isPending}
                     title="Delete"
                   >
-                    <DeleteIcon />
+                    <svg width="20" height="20" viewBox="0 0 32 32" stroke="currentColor" fill="none">
+                      <use href="/icons.svg#icon-trash" />
+                    </svg>
                   </button>
                 </div>
               </div>

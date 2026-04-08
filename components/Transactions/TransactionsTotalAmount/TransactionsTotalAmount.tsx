@@ -2,7 +2,6 @@
 
 import { useCurrentUser } from '@/lib/hooks/useCurrentUser';
 import styles from './TransactionsTotalAmount.module.css';
-import { IncomeIndicatorIcon, ExpenseIndicatorIcon } from '@/components/UI/Icons/Icons';
 import Skeleton from '@/components/UI/Skeleton/Skeleton';
 
 export default function TransactionsTotalAmount() {
@@ -20,7 +19,10 @@ export default function TransactionsTotalAmount() {
   const renderAmount = (amount: number) => {
     if (!amount || amount === 0) {
       return (
-        <p className={styles.amount} style={{ color: 'rgba(250, 250, 250, 0.5)' }}>
+        <p
+          className={styles.amount}
+          style={{ color: 'rgba(250, 250, 250, 0.5)' }}
+        >
           0
         </p>
       );
@@ -57,7 +59,17 @@ export default function TransactionsTotalAmount() {
     <div className={styles.container}>
       <div className={`${styles.block} ${styles.incomeBlock}`}>
         <div className={styles.iconWrapper}>
-          <IncomeIndicatorIcon />
+          <svg width="43" height="43" viewBox="0 0 43 43" fill="none">
+            <rect width="43" height="43" rx="16" fill="rgba(14, 243, 135, 1)" />
+            <use
+              href="/icons.svg#icon-arrow-up"
+              x="13.5"
+              y="13.5"
+              width="16"
+              height="16"
+              fill="rgba(12, 13, 13, 1)"
+            />
+          </svg>
         </div>
         <div className={styles.info}>
           <h3 className={styles.title}>Total Income</h3>
@@ -67,7 +79,17 @@ export default function TransactionsTotalAmount() {
 
       <div className={`${styles.block} ${styles.expenseBlock}`}>
         <div className={styles.iconWrapper}>
-          <ExpenseIndicatorIcon />
+          <svg width="43" height="43" viewBox="0 0 43 43" fill="none">
+            <rect width="43" height="43" rx="16" fill="rgba(14, 243, 135, 1)" />
+            <use
+              href="/icons.svg#icon-arrow-down"
+              x="13.5"
+              y="13.5"
+              width="16"
+              height="16"
+              fill="rgba(12, 13, 13, 1)"
+            />
+          </svg>
         </div>
         <div className={styles.info}>
           <h3 className={styles.title}>Total Expense</h3>
