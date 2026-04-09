@@ -354,6 +354,12 @@
   border-radius: 50%;
   object-fit: cover;
 }
+@media only screen and (min-width: 768px) {
+  .avatarImage {
+    width: 100px;
+    height: 100px;
+  }
+}
 
 .inputWrapper {
   position: relative;
