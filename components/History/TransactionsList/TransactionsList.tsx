@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useDeleteTransaction } from '@/lib/hooks/useDeleteTransaction';
-import { useMedia } from '@/lib/hooks/useMedia';
 import { useUserStore } from '@/lib/store/userStore';
 import type { TransactionItem } from '@/types/transaction';
 import type { TransactionType } from '@/types/sharedTypes';
@@ -23,17 +22,19 @@ export default function TransactionsList({
 }: TransactionsListProps) {
   const deleteMutation = useDeleteTransaction();
   const user = useUserStore(state => state.user);
-  const isPhoneLayout = useMedia('(min-width: 375px) and (max-width: 767px)');
   const [editedTransaction, setEditedTransaction] =
     useState<TransactionItem | null>(null);
+  const [expandedCommentId, setExpandedCommentId] = useState<string | null>(
+    null
+  );
   const currency = user?.currency ? user.currency.toUpperCase() : 'UAH';
 
-  const truncateForPhone = (value: string, maxLength = 7) => {
-    if (!isPhoneLayout || value.length <= maxLength) {
-      return value;
+  const getCommentText = (comment?: string) => {
+    if (!comment || comment.trim() === '') {
+      return '...';
     }
 
-    return `${value.slice(0, maxLength)}...`;
+    return comment;
   };
 
   const formatDateForViewport = (value: string) => {
@@ -92,52 +93,82 @@ export default function TransactionsList({
           </div>
 
           <ul className={css.list}>
-            {transactions.map(transaction => (
-              <li key={transaction._id} className={css.row}>
-                <span>{transaction.category.categoryName}</span>
-                <span>{truncateForPhone(transaction.comment || '...')}</span>
-                <span>{formatDateForViewport(transaction.date)}</span>
-                <span>{transaction.time}</span>
-                <span className={css.sumValue}>
-                  {transaction.sum} / {currency}
-                </span>
-                <div className={css.actions}>
-                  <button
-                    type="button"
-                    className={`${css.iconButton} ${css.editButton}`}
-                    onClick={() => setEditedTransaction(transaction)}
-                    aria-label="Edit transaction"
-                  >
-                    <svg
-                      aria-hidden
-                      width={16}
-                      height={16}
-                      className={css.editIcon}
+            {transactions.map(transaction => {
+              const fullComment = getCommentText(transaction.comment);
+              const isExpanded = expandedCommentId === transaction._id;
+              const canExpand = fullComment !== '...';
+
+              return (
+                <li key={transaction._id} className={css.row}>
+                  <span>{transaction.category.categoryName}</span>
+                  <span className={css.commentCell}>
+                    <button
+                      type="button"
+                      className={css.commentButton}
+                      onClick={() =>
+                        setExpandedCommentId(prev =>
+                          prev === transaction._id ? null : transaction._id
+                        )
+                      }
+                      title={fullComment}
+                      aria-expanded={isExpanded}
+                      aria-label="Show full comment"
                     >
-                      <use href="/icons.svg#icon-edit" />
-                    </svg>
-                    <span className={css.desktopButtonText}>Edit</span>
-                  </button>
-                  <button
-                    type="button"
-                    className={`${css.iconButton} ${css.deleteButton}`}
-                    onClick={() => onDelete(transaction._id)}
-                    aria-label="Delete transaction"
-                    disabled={deleteMutation.isPending}
-                  >
-                    <svg
-                      aria-hidden
-                      width={16}
-                      height={16}
-                      className={css.deleteIcon}
+                      {fullComment}
+                    </button>
+                    {canExpand && (
+                      <span
+                        className={`${css.commentExpanded} ${
+                          isExpanded ? css.commentExpandedOpen : ''
+                        }`}
+                      >
+                        {fullComment}
+                      </span>
+                    )}
+                  </span>
+                  <span>{formatDateForViewport(transaction.date)}</span>
+                  <span>{transaction.time}</span>
+                  <span className={css.sumValue}>
+                    {transaction.sum} / {currency}
+                  </span>
+                  <div className={css.actions}>
+                    <button
+                      type="button"
+                      className={`${css.iconButton} ${css.editButton}`}
+                      onClick={() => setEditedTransaction(transaction)}
+                      aria-label="Edit transaction"
                     >
-                      <use href="/icons.svg#icon-trash" />
-                    </svg>
-                    <span className={css.desktopButtonText}>Delete</span>
-                  </button>
-                </div>
-              </li>
-            ))}
+                      <svg
+                        aria-hidden
+                        width={16}
+                        height={16}
+                        className={css.editIcon}
+                      >
+                        <use href="/icons.svg#icon-edit" />
+                      </svg>
+                      <span className={css.desktopButtonText}>Edit</span>
+                    </button>
+                    <button
+                      type="button"
+                      className={`${css.iconButton} ${css.deleteButton}`}
+                      onClick={() => onDelete(transaction._id)}
+                      aria-label="Delete transaction"
+                      disabled={deleteMutation.isPending}
+                    >
+                      <svg
+                        aria-hidden
+                        width={16}
+                        height={16}
+                        className={css.deleteIcon}
+                      >
+                        <use href="/icons.svg#icon-trash" />
+                      </svg>
+                      <span className={css.desktopButtonText}>Delete</span>
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>
