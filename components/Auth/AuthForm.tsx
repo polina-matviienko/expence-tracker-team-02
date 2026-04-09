@@ -185,13 +185,13 @@ export default function AuthForm({ mode }: AuthFormProps) {
                     {showTrash ? (
                       <span className={css.statusIcon}>
                         <svg width="12" height="12">
-                          <use href="/icons.svg#icon-trash" />
+                          <use href="/icons.svg#icon-error" />
                         </svg>
                       </span>
                     ) : showCheck ? (
                       <span className={css.statusIcon}>
                         <svg width="12" height="12">
-                          <use href="/icons.svg#icon-check" />
+                          <use href="/icons.svg#icon-valid" />
                         </svg>
                       </span>
                     ) : showPassword ? (
