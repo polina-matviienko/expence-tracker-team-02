@@ -1,11 +1,7 @@
 ﻿import AuthNav from '@/components/Auth/AuthNav/AuthNav';
 import AllUsersTab from '@/components/Auth/AllUsers/AllUsers';
-import heroPhone from '@/public/img/Rectangle1xphone.png';
-import heroTab from '@/public/img/Rectangle1xtab.png';
-import heroDesk from '@/public/img/Rectangle1xdesk.png';
+import BgImageScreensaver from '@/components/Auth/BgImageScreensaver/BgImageScreensaver';
 import css from './page.module.css';
-import Image from 'next/image';
-import DecorativeTab from '@/components/Auth/DecorationTab/DecorationTab';
 
 export default function HomePage() {
   return (
@@ -27,20 +23,8 @@ export default function HomePage() {
             <AuthNav />
             <AllUsersTab />
           </div>
-
           <div className={css.bgImage}>
-            <picture>
-              <source srcSet={heroDesk.src} media="(min-width: 1440px)" />
-              <source srcSet={heroTab.src} media="(min-width: 768px)" />
-              <Image
-                src={heroPhone}
-                alt="Hero Image"
-                style={{ width: '100%', height: 'auto' }}
-              />
-            </picture>
-            <div className={css.decorativeWrapper}>
-              <DecorativeTab />
-            </div>
+            <BgImageScreensaver />
           </div>
         </div>
       </div>

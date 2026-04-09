@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import css from './AllUsers.module.css';
 
-const avatars = ['/img/avatar1.jpg', '/img/avatar2.jpg', '/img/avatar3.jpg'];
+const avatars = ['/img/avatar1.png', '/img/avatar2.png', '/img/avatar3.png'];
 
 export default function AllUsersTab() {
   return (
@@ -14,6 +14,8 @@ export default function AllUsersTab() {
             width={125}
             height={48}
             alt="User"
+            width={48}
+            height={48}
             className={css.avatar}
             style={{ transform: `translateX(-${i * 12}px)` }}
           />

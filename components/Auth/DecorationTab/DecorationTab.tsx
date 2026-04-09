@@ -1,15 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import css from './DecorationTab.module.css';
 
 export default function DecorativeTab() {
-  const [balance] = useState({
-    dollars: '632',
-    cents: '000',
-    percent: '+1.29%',
-  });
-
   return (
     <div className={css.container}>
       <div className={css.icon}>
@@ -26,11 +19,9 @@ export default function DecorativeTab() {
       </div>
       <div className={css.content}>
         <p className={css.title}>Your balance</p>
-        <p className={css.balance}>
-          ${balance.dollars}.{balance.cents}
-        </p>
+        <p className={css.balance}>$632.000</p>
       </div>
-      <div className={css.procentWrapper}>{balance.percent}</div>
+      <div className={css.procentWrapper}>+1.29%</div>
     </div>
   );
 }
