@@ -14,8 +14,6 @@ export default function AllUsersTab() {
             width={125}
             height={48}
             alt="User"
-            width={48}
-            height={48}
             className={css.avatar}
             style={{ transform: `translateX(-${i * 12}px)` }}
           />
