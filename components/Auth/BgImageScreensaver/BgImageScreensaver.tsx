@@ -2,12 +2,12 @@
 
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import heroPhone from '@/public/img/Rectangle1xphone.png';
-import heroPhone2x from '@/public/img/Rectangle2xphone.png';
-import heroTab from '@/public/img/Rectangle1xtab.png';
-import heroTab2x from '@/public/img/Rectangle2xtab.png';
-import heroDesk from '@/public/img/Rectangle1xdesk.png';
-import heroDesk2x from '@/public/img/Rectangle2xdesk.png';
+import heroPhone from '@/public/img/Rectangle1xphone.webp';
+import heroPhone2x from '@/public/img/Rectangle2xphone.webp';
+import heroTab from '@/public/img/Rectangle1xtab.webp';
+import heroTab2x from '@/public/img/Rectangle2xtab.webp';
+import heroDesk from '@/public/img/Rectangle1xdesk.webp';
+import heroDesk2x from '@/public/img/Rectangle2xdesk.webp';
 import css from './BgImageScreensaver.module.css';
 
 const DvdMover = dynamic(() => import('./DvdMover'), { ssr: false });

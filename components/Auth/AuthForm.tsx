@@ -16,11 +16,6 @@ interface AuthFormProps {
   mode: 'login' | 'register';
 }
 
-const DecorativeTab = dynamic(
-  () => import('@/components/Auth/DecorationTab/DecorationTab'),
-  { ssr: false }
-);
-
 export default function AuthForm({ mode }: AuthFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
