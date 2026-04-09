@@ -5,7 +5,6 @@ import './globals.css';
 import Header from '@/components/Layout/Header/Header';
 import { ModalProvider } from '@/providers/modal-provider';
 import Providers from '@/components/Layout/Providers';
-import Link from 'next/link';
 
 const inter = Inter({
   subsets: ['latin'],
