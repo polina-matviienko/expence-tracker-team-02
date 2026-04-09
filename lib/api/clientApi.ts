@@ -189,11 +189,10 @@ export const updateTransaction = async (
 };
 
 export const deleteTransaction = async (
-  type: TransactionType,
   id: string
 ): Promise<DeleteTransactionResponse> => {
   const response = await nextServer.delete<DeleteTransactionResponse>(
-    `/transactions/${type}/${id}`
+    `/transactions/${id}`
   );
 
   return response.data;
