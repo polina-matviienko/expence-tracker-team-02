@@ -11,6 +11,7 @@ import heroPhone from '@/public/img/Rectangle1xphone.png';
 import heroTab from '@/public/img/Rectangle1xtab.png';
 import heroDesk from '@/public/img/Rectangle1xdesk.png';
 import { register, login } from '@/lib/api/clientApi';
+import { useAuthStore } from '@/lib/store/authStore';
 import DecorativeTab from '@/components/Auth/DecorationTab/DecorationTab';
 import type { LoginRequest, RegisterRequest } from '@/types/authentication';
 
@@ -89,6 +90,8 @@ export default function AuthForm({ mode }: AuthFormProps) {
         } else {
           await login(formData as LoginRequest);
         }
+
+        await useAuthStore.getState().loadUser();
 
         toast.success(
           isRegister ? 'Registration was successful' : 'Login successful'
