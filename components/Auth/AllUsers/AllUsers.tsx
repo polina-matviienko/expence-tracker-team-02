@@ -1,16 +1,19 @@
+import Image from 'next/image';
 import css from './AllUsers.module.css';
 
-const avatars = ['/img/avatar1.jpg', '/img/avatar2.jpg', '/img/avatar3.jpg'];
+const avatars = ['/img/avatar1.png', '/img/avatar2.png', '/img/avatar3.png'];
 
 export default function AllUsersTab() {
   return (
     <div className={css.tab}>
       <div className={css.avatars}>
         {avatars.map((src, i) => (
-          <img
+          <Image
             key={i}
             src={src}
             alt="User"
+            width={48}
+            height={48}
             className={css.avatar}
             style={{ transform: `translateX(-${i * 12}px)` }}
           />

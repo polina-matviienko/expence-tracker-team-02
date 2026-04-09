@@ -1,19 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import css from './AuthForm.module.css';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { toast } from 'react-hot-toast';
 import Button from '@/components/UI/Button/Button';
-import heroPhone from '@/public/img/Rectangle1xphone.png';
-import heroTab from '@/public/img/Rectangle1xtab.png';
-import heroDesk from '@/public/img/Rectangle1xdesk.png';
 import { register, login } from '@/lib/api/clientApi';
 import { useAuthStore } from '@/lib/store/authStore';
-import DecorativeTab from '@/components/Auth/DecorationTab/DecorationTab';
 import type { LoginRequest, RegisterRequest } from '@/types/authentication';
+import BgImageScreensaver from '@/components/Auth/BgImageScreensaver/BgImageScreensaver';
 
 interface AuthFormProps {
   mode: 'login' | 'register';
@@ -115,151 +111,144 @@ export default function AuthForm({ mode }: AuthFormProps) {
 
   return (
     <div>
-      <div className={`${css.container} ${css.deskContainer}`}>
-        <div className={css.bgImage}>
-          <picture>
-            <source srcSet={heroDesk.src} media="(min-width: 1440px)" />
-            <source srcSet={heroTab.src} media="(min-width: 768px)" />
-            <Image
-              src={heroPhone}
-              alt="Hero Image"
-              style={{ width: '100%', height: 'auto' }}
-            />
-          </picture>
-          <div className={css.decorativeWrapper}>
-            <DecorativeTab />
+      <div className="container">
+        <div className={css.deskContainer}>
+          <div className={css.bgImage}>
+            <BgImageScreensaver />
           </div>
-        </div>
-        <div>
-          <div className={css.header}>
-            <h1 className={css.title}>{isRegister ? 'Sign Up' : 'Sign In'}</h1>
-            <p className={css.description}>{description}</p>
-          </div>
+          <div>
+            <div className={css.header}>
+              <h1 className={css.title}>
+                {isRegister ? 'Sign Up' : 'Sign In'}
+              </h1>
+              <p className={css.description}>{description}</p>
+            </div>
 
-          <form onSubmit={handleSubmit} className={css.form}>
-            {isRegister && (
+            <form onSubmit={handleSubmit} className={css.form}>
+              {isRegister && (
+                <div className={css.field}>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Name"
+                    value={(formData as RegisterRequest).name || ''}
+                    onChange={handleChange}
+                    onFocus={handleFocus}
+                    className={`${css.input} ${errors.name ? css.error : ''}`}
+                    disabled={isPending}
+                  />
+                  {errors.name && (
+                    <span className={css.errorText}>{errors.name}</span>
+                  )}
+                </div>
+              )}
+
               <div className={css.field}>
                 <input
-                  type="text"
-                  name="name"
-                  placeholder="Name"
-                  value={(formData as RegisterRequest).name || ''}
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={formData.email}
                   onChange={handleChange}
                   onFocus={handleFocus}
-                  className={`${css.input} ${errors.name ? css.error : ''}`}
+                  className={`${css.input} ${errors.email ? css.error : ''}`}
                   disabled={isPending}
                 />
-                {errors.name && (
-                  <span className={css.errorText}>{errors.name}</span>
+                {errors.email && (
+                  <span className={css.errorText}>{errors.email}</span>
                 )}
               </div>
-            )}
 
-            <div className={css.field}>
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-                onFocus={handleFocus}
-                className={`${css.input} ${errors.email ? css.error : ''}`}
-                disabled={isPending}
-              />
-              {errors.email && (
-                <span className={css.errorText}>{errors.email}</span>
-              )}
-            </div>
-
-            <div className={css.field}>
-              <div className={css.passwordWrapper}>
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  name="password"
-                  placeholder="Password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  onFocus={e => {
-                    handleFocus(e);
-                    setIsPasswordFocused(true);
-                  }}
-                  onBlur={() => setIsPasswordFocused(false)}
-                  className={`${css.input} ${errors.password ? css.error : ''} ${showCheck ? css.inputSuccess : ''}`}
-                  disabled={isPending}
-                />
-                <button
-                  type="button"
-                  onMouseDown={event => event.preventDefault()}
-                  onClick={showEye ? togglePassword : undefined}
-                  className={`${css.eyeButton} ${showTrash ? css.iconInvalid : ''} ${showCheck ? css.iconValid : ''}`}
-                  tabIndex={-1}
-                >
-                  {showTrash ? (
-                    <span className={css.statusIcon}>
-                      <svg width="12" height="12">
-                        <use href="/icons.svg#icon-trash" />
+              <div className={css.field}>
+                <div className={css.passwordWrapper}>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    name="password"
+                    placeholder="Password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    onFocus={e => {
+                      handleFocus(e);
+                      setIsPasswordFocused(true);
+                    }}
+                    onBlur={() => setIsPasswordFocused(false)}
+                    className={`${css.input} ${errors.password ? css.error : ''} ${showCheck ? css.inputSuccess : ''}`}
+                    disabled={isPending}
+                  />
+                  <button
+                    type="button"
+                    onMouseDown={event => event.preventDefault()}
+                    onClick={showEye ? togglePassword : undefined}
+                    className={`${css.eyeButton} ${showTrash ? css.iconInvalid : ''} ${showCheck ? css.iconValid : ''}`}
+                    tabIndex={-1}
+                  >
+                    {showTrash ? (
+                      <span className={css.statusIcon}>
+                        <svg width="12" height="12">
+                          <use href="/icons.svg#icon-trash" />
+                        </svg>
+                      </span>
+                    ) : showCheck ? (
+                      <span className={css.statusIcon}>
+                        <svg width="12" height="12">
+                          <use href="/icons.svg#icon-check" />
+                        </svg>
+                      </span>
+                    ) : showPassword ? (
+                      <svg width="16" height="16">
+                        <use href="/icons.svg#eye" />
                       </svg>
-                    </span>
-                  ) : showCheck ? (
-                    <span className={css.statusIcon}>
-                      <svg width="12" height="12">
-                        <use href="/icons.svg#icon-check" />
+                    ) : (
+                      <svg width="16" height="16">
+                        <use href="/icons.svg#icon-eye-off" />
                       </svg>
-                    </span>
-                  ) : showPassword ? (
-                    <svg width="16" height="16">
-                      <use href="/icons.svg#eye" />
-                    </svg>
-                  ) : (
-                    <svg width="16" height="16">
-                      <use href="/icons.svg#icon-eye-off" />
-                    </svg>
-                  )}
-                </button>
+                    )}
+                  </button>
+                </div>
+                {showCheck && !errors.password && (
+                  <span className={css.passwordStatus}>Password is secure</span>
+                )}
+                {errors.password && (
+                  <span className={css.errorText}>{errors.password}</span>
+                )}
               </div>
-              {showCheck && !errors.password && (
-                <span className={css.passwordStatus}>Password is secure</span>
-              )}
-              {errors.password && (
-                <span className={css.errorText}>{errors.password}</span>
+
+              <Button
+                type="submit"
+                variant="green"
+                size="desktop"
+                disabled={isPending}
+                className={`${css.submitButton} ${
+                  isRegister ? css.submitButtonRegister : css.submitButtonLogin
+                }`}
+              >
+                {isPending
+                  ? isRegister
+                    ? 'Signing Up...'
+                    : 'Signing In...'
+                  : isRegister
+                    ? 'Sign Up'
+                    : 'Sign In'}
+              </Button>
+            </form>
+
+            <div className={css.switch}>
+              {isRegister ? (
+                <>
+                  Already have an account?{' '}
+                  <Link href="/login" className={css.link}>
+                    Sign In
+                  </Link>
+                </>
+              ) : (
+                <>
+                  Don&apos;t have an account?{' '}
+                  <Link href="/register" className={css.link}>
+                    Sign Up
+                  </Link>
+                </>
               )}
             </div>
-
-            <Button
-              type="submit"
-              variant="green"
-              size="desktop"
-              disabled={isPending}
-              className={`${css.submitButton} ${
-                isRegister ? css.submitButtonRegister : css.submitButtonLogin
-              }`}
-            >
-              {isPending
-                ? isRegister
-                  ? 'Signing Up...'
-                  : 'Signing In...'
-                : isRegister
-                  ? 'Sign Up'
-                  : 'Sign In'}
-            </Button>
-          </form>
-
-          <div className={css.switch}>
-            {isRegister ? (
-              <>
-                Already have an account?{' '}
-                <Link href="/login" className={css.link}>
-                  Sign In
-                </Link>
-              </>
-            ) : (
-              <>
-                Don't have an account?{' '}
-                <Link href="/register" className={css.link}>
-                  Sign Up
-                </Link>
-              </>
-            )}
           </div>
         </div>
       </div>

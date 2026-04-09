@@ -1,0 +1,36 @@
+.bgImage {
+  position: relative;
+  overflow: hidden;
+  width: 335px;
+  height: 381px;
+}
+
+.bgImage picture,
+.bgImage picture > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.dvdElement {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  z-index: 1;
+  will-change: transform;
+}
+
+@media screen and (min-width: 768px) {
+  .bgImage {
+    width: 704px;
+    height: 482px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .bgImage {
+    width: 611px;
+    height: 569px;
+  }
+}
