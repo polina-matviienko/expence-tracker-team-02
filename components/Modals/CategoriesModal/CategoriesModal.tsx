@@ -11,10 +11,10 @@ import {
   useUpdateCategory,
   useDeleteCategory,
 } from '@/lib/hooks/useCategoriesCRUD';
-import { EditIcon, DeleteIcon, SelectIcon } from '@/components/UI/Icons/Icons';
-
 import { toast } from 'react-hot-toast';
 import styles from './CategoriesModal.module.css';
+import { Axios, AxiosError } from 'axios';
+import { log } from 'console';
 
 export default function CategoriesModal() {
   const {
@@ -79,7 +79,9 @@ export default function CategoriesModal() {
       await deleteCategoryMutation.mutateAsync(id);
       toast.success('Category deleted');
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Delete failed');
+      toast.error(
+        error.response?.data?.response?.message || 'Something went wrong'
+      );
     }
   };
 
@@ -125,7 +127,13 @@ export default function CategoriesModal() {
                     onClick={() => handleSelect(cat._id, cat.categoryName)}
                     title="Select"
                   >
-                    <svg width="20" height="20" viewBox="0 0 32 32" stroke="currentColor" fill="none">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 32 32"
+                      stroke="currentColor"
+                      fill="none"
+                    >
                       <use href="/icons.svg#icon-check" />
                     </svg>
                   </button>
@@ -134,7 +142,13 @@ export default function CategoriesModal() {
                     onClick={() => handleEditInit(cat._id, cat.categoryName)}
                     title="Edit"
                   >
-                    <svg width="20" height="20" viewBox="0 0 32 32" stroke="currentColor" fill="none">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 32 32"
+                      stroke="currentColor"
+                      fill="none"
+                    >
                       <use href="/icons.svg#icon-edit" />
                     </svg>
                   </button>
@@ -144,7 +158,13 @@ export default function CategoriesModal() {
                     disabled={deleteCategoryMutation.isPending}
                     title="Delete"
                   >
-                    <svg width="20" height="20" viewBox="0 0 32 32" stroke="currentColor" fill="none">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 32 32"
+                      stroke="currentColor"
+                      fill="none"
+                    >
                       <use href="/icons.svg#icon-trash" />
                     </svg>
                   </button>

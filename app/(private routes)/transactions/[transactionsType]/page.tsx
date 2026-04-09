@@ -15,11 +15,11 @@ export default async function TransactionsPage({
     notFound();
   }
 
-  const title = transactionsType === 'incomes' ? 'Incomes' : 'Expenses';
-  const description =
-    transactionsType === 'incomes'
-      ? 'Browse and manage your income transactions to keep track of your earnings and financial growth.'
-      : 'Capture and organize every penny spent with ease! A clear view of your expenses is the first step toward smart financial habits.';
+  const isIncome = transactionsType === 'incomes';
+  const title = isIncome ? 'Incomes' : 'Expenses';
+  const description = isIncome
+    ? 'Track your income and watch your wealth grow! Understanding your earnings is key to successful financial planning.'
+    : 'Capture and organize every penny spent with ease! A clear view of your expenses is the first step toward smart financial habits.';
 
   return (
     <div className={styles.pageContainer}>
