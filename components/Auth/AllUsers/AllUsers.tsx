@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import css from './AllUsers.module.css';
 
-const avatars = ['/img/avatar1.png', '/img/avatar2.png', '/img/avatar3.png'];
+const avatars = ['/img/avatar1.webp', '/img/avatar2.webp', '/img/avatar3.webp'];
 
 export default function AllUsersTab() {
   return (
