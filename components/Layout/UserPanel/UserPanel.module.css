@@ -3,7 +3,7 @@
   top: calc(100% + 8px);
   right: 0;
   z-index: 50;
-  min-width: 194px;
+  width: 194px;
   padding: 16px 16px 15px 16px;
   background-color: var(--bg-color);
   border: 1px solid var(--white-dim-01);
@@ -54,7 +54,7 @@
 
 @media screen and (min-width: 768px) {
   .panelContainer {
-    min-width: 217px;
+    width: 217px;
     padding: 18px 16px;
     gap: 12px;
   }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState, useEffect } from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell } from 'recharts';
 import { useStats } from '@/lib/hooks/useStats';
 import { useTransactions } from '@/lib/hooks/useTransactions';
 import { useCategories } from '@/lib/hooks/useCategories';
@@ -50,7 +50,8 @@ export default function TransactionsChart() {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
+    const id = requestAnimationFrame(() => setIsMounted(true));
+    return () => cancelAnimationFrame(id);
   }, []);
 
   const incomesAggregated = useMemo(() => {

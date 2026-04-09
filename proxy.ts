@@ -15,6 +15,7 @@ export async function proxy(request: NextRequest) {
 
   const isPublic = publicRoutes.some(route => pathname.startsWith(route));
   const isPrivate = privateRoutes.some(route => pathname.startsWith(route));
+  const isRoot = pathname === '/';
 
   if (!accessToken && refreshToken) {
     try {
@@ -22,9 +23,12 @@ export async function proxy(request: NextRequest) {
       const setCookie = response.headers['set-cookie'];
 
       if (setCookie) {
-        const res = isPublic
-          ? NextResponse.redirect(new URL('/', request.url))
-          : NextResponse.next();
+        const res =
+          isPublic || isRoot
+            ? NextResponse.redirect(
+                new URL('/transactions/expenses', request.url)
+              )
+            : NextResponse.next();
 
         const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
 
@@ -65,7 +69,7 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  if ((accessToken || refreshToken) && isPublic) {
+  if ((accessToken || refreshToken) && (isPublic || isRoot)) {
     return NextResponse.redirect(
       new URL('/transactions/expenses', request.url)
     );
@@ -79,5 +83,11 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/history/:path*', '/transactions/:path*', '/login', '/register'],
+  matcher: [
+    '/',
+    '/history/:path*',
+    '/transactions/:path*',
+    '/login',
+    '/register',
+  ],
 };
