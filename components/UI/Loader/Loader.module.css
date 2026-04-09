@@ -31,7 +31,7 @@
 }
 
 .spinner {
-  animation: spin 0.9s linear infinite;
+  animation: spin 2s linear infinite;
 }
 
 .label {
