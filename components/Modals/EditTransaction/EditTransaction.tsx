@@ -70,7 +70,8 @@ export default function EditTransaction({
       date: parseDate(transaction?.date),
       time: parseTime(transaction?.time),
       sum: String(transaction?.sum ?? ''),
-      comment: transaction?.comment ?? '',
+      comment:
+        transaction?.comment === '...' ? '' : (transaction?.comment ?? ''),
       category: transaction?.category?._id ?? '',
     },
     validationSchema: Yup.object({
@@ -81,20 +82,37 @@ export default function EditTransaction({
         .typeError('Required')
         .positive('Must be positive')
         .required('Required'),
-      comment: Yup.string().max(250, 'Too long'),
+      comment: Yup.string()
+        .test(
+          'comment-min-length',
+          'Comment must be at least 3 characters',
+          value => {
+            const trimmedValue = value?.trim() ?? '';
+            return trimmedValue === '' || trimmedValue.length >= 3;
+          }
+        )
+        .max(250, 'Too long'),
     }),
     onSubmit: async values => {
       try {
+        const trimmedComment = values.comment.trim();
+        const initialTrimmedComment = (transaction.comment ?? '').trim();
+        const payload = {
+          date: values.date ? toLocalIsoDate(values.date) : transaction.date,
+          time: values.time ? formatTime(values.time) : transaction.time,
+          sum: Number(values.sum),
+          category: values.category,
+          ...(trimmedComment !== ''
+            ? { comment: trimmedComment }
+            : initialTrimmedComment !== ''
+              ? { comment: '...' }
+              : {}),
+        };
+
         await updateMutation.mutateAsync({
           type,
           id: transaction._id,
-          data: {
-            date: values.date ? toLocalIsoDate(values.date) : transaction.date,
-            time: values.time ? formatTime(values.time) : transaction.time,
-            sum: Number(values.sum),
-            comment: values.comment,
-            category: values.category,
-          },
+          data: payload,
         });
 
         toast.success('Transaction updated successfully');

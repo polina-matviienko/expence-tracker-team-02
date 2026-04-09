@@ -95,7 +95,7 @@ export default function TransactionsList({
             {transactions.map(transaction => (
               <li key={transaction._id} className={css.row}>
                 <span>{transaction.category.categoryName}</span>
-                <span>{truncateForPhone(transaction.comment || '—')}</span>
+                <span>{truncateForPhone(transaction.comment || '...')}</span>
                 <span>{formatDateForViewport(transaction.date)}</span>
                 <span>{transaction.time}</span>
                 <span className={css.sumValue}>
