@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useAuthStore } from '@/lib/store/authStore';
 import UserPanel from '../UserPanel/UserPanel';
 import css from './UserBarBtn.module.css';
 
@@ -10,7 +11,8 @@ type UserBarBtnProps = {
 
 const UserBarBtn = ({ onBurgerClose }: UserBarBtnProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const userName = 'Alex Rybachok';
+  const user = useAuthStore(s => s.user);
+  const userName = user?.name || 'User';
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -42,7 +44,12 @@ const UserBarBtn = ({ onBurgerClose }: UserBarBtnProps) => {
         </div>
       </button>
 
-      {isOpen && <UserPanel onClose={() => setIsOpen(false)} onBurgerClose={onBurgerClose} />}
+      {isOpen && (
+        <UserPanel
+          onClose={() => setIsOpen(false)}
+          onBurgerClose={onBurgerClose}
+        />
+      )}
     </div>
   );
 };
