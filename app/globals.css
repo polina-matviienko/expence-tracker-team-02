@@ -314,4 +314,10 @@ input[type='number'] {
   width: 100% !important;
 }
 
+@media screen and (max-width: 767px) {
+  .react-datepicker-popper {
+    margin-left: 30px !important;
+  }
+}
+
 /* --- GLOBAL PAGE LOADER --- */
