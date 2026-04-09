@@ -135,7 +135,9 @@
   line-height: 129%;
   gap: 4px;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .select:hover,
@@ -183,7 +185,9 @@
   font-size: 14px;
   line-height: 129%;
   background: transparent;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .optionBtn:hover,
@@ -199,7 +203,9 @@
 
 .inputContainer {
   width: 100%;
-  max-width: calc(var(--profile-form-max) - var(--select-width) - var(--controls-gap));
+  max-width: calc(
+    var(--profile-form-max) - var(--select-width) - var(--controls-gap)
+  );
 }
 
 .inputContainer [class*='field'] {
@@ -339,4 +345,25 @@
     padding: 40px !important;
     min-width: 500px !important;
   }
+}
+.hiddenInput {
+  display: none;
+}
+
+.avatarImage {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.inputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.errorText {
+  color: #ef4444;
+  font-size: 12px;
+  position: absolute;
+  bottom: -20px;
+  left: 18px;
 }

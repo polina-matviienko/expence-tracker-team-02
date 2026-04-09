@@ -1,159 +1,130 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
+import axios, { AxiosError } from 'axios';
+import toast from 'react-hot-toast';
+
 import Modal from '../Modal/Modal';
 import { useModal } from '@/lib/hooks/use-modal-store';
-import Button from '@/components/UI/Button/Button';
-import { Input } from '@/components/UI/input/input';
-import css from './ProfileSettings.module.css';
-
-type Currency = {
-  code: string;
-  label: string;
-  symbol: string;
-};
-
-const currencies: Currency[] = [
-  { code: 'UAH', label: 'UAH', symbol: '₴' },
-  { code: 'USD', label: 'USD', symbol: '$' },
-  { code: 'EUR', label: 'EUR', symbol: '€' },
-];
+import { useAuthStore } from '@/lib/store/authStore';
+import {
+  updateUserInfo,
+  uploadAvatar,
+  removeAvatar,
+} from '@/lib/api/clientApi';
+import ProfileSettingsForm from '@/components/UI/ProfileSettingsForm/ProfileSettingsForm';
 
 const ProfileSettings = () => {
   const { onClose } = useModal();
-  const [isCurrencyOpen, setCurrencyOpen] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState<Currency>(currencies[0]);
-  const cardRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const modalEl = cardRef.current?.closest('.modal') as HTMLElement | null;
-    if (!modalEl) return;
-    const prevOverflow = modalEl.style.overflow;
-    modalEl.style.overflow = 'hidden';
+  const user = useAuthStore(s => s.user);
+  const setUser = useAuthStore(s => s.setUser);
 
-    return () => {
-      modalEl.style.overflow = prevOverflow;
-    };
-  }, []);
+  const [isAvatarLoading, setIsAvatarLoading] = useState(false);
 
-  useEffect(() => {
-    const html = document.documentElement;
-    const body = document.body;
-    const prevHtml = html.style.overflowX;
-    const prevBody = body.style.overflowX;
-    html.style.overflowX = 'hidden';
-    body.style.overflowX = 'hidden';
-    return () => {
-      html.style.overflowX = prevHtml;
-      body.style.overflowX = prevBody;
-    };
-  }, []);
+  if (!user) return null;
 
-  const toggleCurrency = () => setCurrencyOpen((prev) => !prev);
+  const handleSubmitProfile = async (values: {
+    name: string;
+    currency: string;
+  }) => {
+    try {
+      await updateUserInfo({
+        name: values.name,
+        currency: values.currency as 'uah' | 'usd' | 'eur',
+      });
 
-  const handleSelectCurrency = (currency: Currency) => {
-    setSelectedCurrency(currency);
-    setCurrencyOpen(false);
+      if (setUser) {
+        setUser({
+          ...user,
+          name: values.name,
+          currency: values.currency as 'uah' | 'usd' | 'eur',
+        });
+      }
+
+      toast.success('Profile successfully updated!');
+      onClose();
+    } catch (error) {
+      let serverErrorMsg =
+        'Can not update profile info. Please try again later.';
+
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<{ message: string }>;
+        serverErrorMsg = axiosError.response?.data?.message || serverErrorMsg;
+      }
+
+      toast.error(serverErrorMsg);
+      throw error;
+    }
   };
 
-  const handleCardClick = () => setCurrencyOpen(false);
+  const handleAvatarUpload = async (file: File) => {
+    setIsAvatarLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append('avatar', file);
+
+      const response = await uploadAvatar(formData);
+
+      if (setUser) {
+        setUser({
+          ...user,
+          avatarUrl: response.avatarUrl,
+        });
+      }
+      toast.success('Avatar uploaded!');
+    } catch (error) {
+      let serverErrorMsg = 'Error uploading avatar.';
+
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<{ message: string }>;
+        serverErrorMsg = axiosError.response?.data?.message || serverErrorMsg;
+      }
+
+      toast.error(serverErrorMsg);
+    } finally {
+      setIsAvatarLoading(false);
+    }
+  };
+
+  const handleAvatarRemove = async () => {
+    setIsAvatarLoading(true);
+    try {
+      await removeAvatar();
+
+      if (setUser) {
+        setUser({
+          ...user,
+          avatarUrl: '',
+        });
+      }
+      toast.success('Avatar removed!');
+    } catch (error) {
+      let serverErrorMsg = 'Error removing avatar.';
+
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<{ message: string }>;
+        serverErrorMsg = axiosError.response?.data?.message || serverErrorMsg;
+      }
+
+      toast.error(serverErrorMsg);
+    } finally {
+      setIsAvatarLoading(false);
+    }
+  };
 
   return (
     <Modal onClose={onClose}>
-      <div ref={cardRef} className={css.card} onClick={handleCardClick}>
-        <h2 className={css.title}>Profile settings</h2>
-
-        <div className={css.avatarSection}>
-          <div className={css.avatarRing}>
-            <div className={css.avatar}>
-              <svg className={css.avatarIcon} aria-hidden>
-                <use href="/icons.svg#icon-user" />
-              </svg>
-            </div>
-          </div>
-
-          <div className={css.avatarActions}>
-            <Button
-              type="button"
-              variant="gray"
-              size="mobile"
-              className={`${css.smallBtn} ${css.smallLeftBtn}`}
-            >
-              Upload new photo
-            </Button>
-            <Button
-              type="button"
-              variant="gray"
-              size="mobile"
-              className={`${css.smallBtn} ${css.smallRightBtn}`}
-            >
-              Remove
-            </Button>
-          </div>
-        </div>
-
-        <form className={css.form}>
-          <div className={css.controlsRow}>
-            <div
-              className={css.selectWrapper}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                type="button"
-                className={css.select}
-                id="currency"
-                onClick={toggleCurrency}
-                aria-expanded={isCurrencyOpen}
-                aria-haspopup="listbox"
-              >
-                <span className={css.currencyValue}>
-                  {selectedCurrency.symbol} {selectedCurrency.label}
-                </span>
-                <svg
-                  width="18"
-                  height="18"
-                  className={`${css.chevron} ${isCurrencyOpen ? css.chevronOpen : ''}`}
-                  aria-hidden
-                >
-                  <use href="/icons.svg#icon-chevron-down" />
-                </svg>
-              </button>
-
-              {isCurrencyOpen && (
-                <ul className={css.options} role="listbox">
-                  {currencies.map((currency) => (
-                    <li key={currency.code}>
-                      <button
-                        type="button"
-                        className={`${css.optionBtn} ${
-                          currency.code === selectedCurrency.code
-                            ? css.optionBtnActive
-                            : ''
-                        }`}
-                        onClick={() => handleSelectCurrency(currency)}
-                        aria-label={`Select ${currency.label}`}
-                      >
-                        {currency.symbol} {currency.label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-
-            <Input
-              type="text"
-              placeholder="Alex Rybachok"
-              aria-label="User name"
-              containerClassName={css.inputContainer}
-            />
-          </div>
-
-          <Button type="button" className={css.saveBtn}>
-            Save
-          </Button>
-        </form>
-      </div>
+      <ProfileSettingsForm
+        initialName={user.name || ''}
+        initialCurrency={user.currency?.toLowerCase() || 'uah'}
+        avatarUrl={user.avatarUrl}
+        isAvatarLoading={isAvatarLoading}
+        onClose={onClose}
+        onSubmitProfile={handleSubmitProfile}
+        onAvatarUpload={handleAvatarUpload}
+        onAvatarRemove={handleAvatarRemove}
+      />
     </Modal>
   );
 };

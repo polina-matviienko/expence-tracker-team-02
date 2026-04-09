@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useAuthStore } from '@/lib/store/authStore';
 import UserPanel from '../UserPanel/UserPanel';
 import css from './UserBarBtn.module.css';
+import Image from 'next/image';
 
 type UserBarBtnProps = {
   onBurgerClose?: () => void;
@@ -26,9 +27,19 @@ const UserBarBtn = ({ onBurgerClose }: UserBarBtnProps) => {
         aria-expanded={isOpen}
       >
         <div className={css.avatarWrapper}>
-          <svg className={css.userIcon} width="16" height="16">
-            <use href="/icons.svg#icon-user-avatar" />
-          </svg>
+          {user?.avatarUrl ? (
+            <Image
+              src={user.avatarUrl}
+              alt={userName}
+              width={32}
+              height={32}
+              className={css.userAvatar}
+            />
+          ) : (
+            <svg className={css.userIcon} width="16" height="16">
+              <use href="/icons.svg#icon-user-avatar" />
+            </svg>
+          )}
         </div>
 
         <span className={css.userName}>{userName}</span>
