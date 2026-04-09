@@ -13,8 +13,24 @@ import {
 } from '@/lib/hooks/useCategoriesCRUD';
 import { toast } from 'react-hot-toast';
 import styles from './CategoriesModal.module.css';
-import { Axios, AxiosError } from 'axios';
-import { log } from 'console';
+import { AxiosError } from 'axios';
+
+interface Category {
+  _id: string;
+  categoryName: string;
+}
+
+interface CategoriesResponse {
+  incomes: Category[];
+  expenses: Category[];
+}
+
+interface ApiError {
+  message?: string;
+  response?: {
+    message?: string;
+  };
+}
 
 interface ErrorResponse {
   response?: {
@@ -30,7 +46,9 @@ export default function CategoriesModal() {
     transactionType,
   } = useUiStore();
 
-  const { data: categoriesData, isLoading, isError } = useCategories();
+  const { data, isLoading, isError } = useCategories();
+  const categoriesData = data as CategoriesResponse | undefined;
+
   const createCategoryMutation = useCreateCategory();
   const updateCategoryMutation = useUpdateCategory();
   const deleteCategoryMutation = useDeleteCategory();
@@ -65,19 +83,15 @@ export default function CategoriesModal() {
         resetForm();
         setEditingId(null);
       } catch (error: unknown) {
-        if (error instanceof AxiosError) {
-          const err = error as AxiosError<ErrorResponse>;
-          toast.error(err.response?.data?.response?.message || 'Action failed');
-        } else {
-          toast.error('Unexpected error');
-        }
+        const axiosError = error as AxiosError<ApiError>;
+        toast.error(axiosError.response?.data?.message || 'Action failed');
       }
     },
   });
 
-  // The API returns { incomes: [], expenses: [] }
-  const currentCategories =
-    (categoriesData && categoriesData[transactionType]) || [];
+  const currentCategories = categoriesData
+    ? categoriesData[transactionType as keyof CategoriesResponse] || []
+    : [];
 
   const handleEditInit = (id: string, name: string) => {
     setEditingId(id);
@@ -89,14 +103,10 @@ export default function CategoriesModal() {
       await deleteCategoryMutation.mutateAsync(id);
       toast.success('Category deleted');
     } catch (error: unknown) {
-      if (error instanceof AxiosError) {
-        const err = error as AxiosError<ErrorResponse>;
-        toast.error(
-          err.response?.data?.response?.message || 'Something went wrong'
-        );
-      } else {
-        toast.error('Unexpected error');
-      }
+      const axiosError = error as AxiosError<ApiError>;
+      toast.error(
+        axiosError.response?.data?.response?.message || 'Something went wrong'
+      );
     }
   };
 
@@ -134,7 +144,7 @@ export default function CategoriesModal() {
               No categories found for {transactionType}
             </p>
           ) : (
-            currentCategories.map(cat => (
+            currentCategories.map((cat: Category) => (
               <div key={cat._id} className={styles.item}>
                 <span className={styles.name}>{cat.categoryName}</span>
                 <div className={styles.actions}>

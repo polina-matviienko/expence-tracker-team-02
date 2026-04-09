@@ -1,8 +1,9 @@
 'use client';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
+import GlobalLoader from '@/components/UI/Loader/GlobalLoader';
 import { useAuthStore } from '@/lib/store/authStore';
 import { getCurrentUser } from '@/lib/api/clientApi';
 
@@ -24,6 +25,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const loadUser = async () => {
+      const token = document.cookie.includes('token');
+      if (!token) return;
       try {
         const user = await getCurrentUser();
         setUser(user);
@@ -40,6 +43,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       {children}
+      <GlobalLoader />
       <Toaster position="top-right" reverseOrder={false} />
     </QueryClientProvider>
   );

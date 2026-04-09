@@ -1,5 +1,6 @@
 import { CurrentUserResponse } from '@/types/user';
 import { nextServer } from './api';
+import { loadingFetch } from './loadingFetch';
 import type {
   UpdateAvatarResponse,
   UpdateUserRequest,
@@ -134,7 +135,7 @@ export const deleteCategory = async (id: string): Promise<void> => {
 };
 
 export const getCurrentMonthStats = async (): Promise<CategoryStatItem[]> => {
-  const response = await fetch('/api/stats/current-month');
+  const response = await loadingFetch('/api/stats/current-month');
 
   if (!response.ok) {
     throw new Error(`Failed to fetch stats: ${response.statusText}`);
