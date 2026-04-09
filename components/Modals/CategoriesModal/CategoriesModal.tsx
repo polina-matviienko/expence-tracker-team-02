@@ -32,6 +32,12 @@ interface ApiError {
   };
 }
 
+interface ErrorResponse {
+  response?: {
+    message?: string;
+  };
+}
+
 export default function CategoriesModal() {
   const {
     isCategoriesModalOpen,
@@ -112,6 +118,7 @@ export default function CategoriesModal() {
   const handleClose = () => {
     setEditingId(null);
     formik.resetForm();
+    setSelectedCategory('', '');
     closeCategoriesModal();
   };
 

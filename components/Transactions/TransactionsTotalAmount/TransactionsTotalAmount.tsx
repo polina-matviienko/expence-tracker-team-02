@@ -16,6 +16,8 @@ export default function TransactionsTotalAmount() {
     }).format(amount);
   };
 
+  const currency = user?.currency ? user.currency.toUpperCase() : 'UAH';
+
   const renderAmount = (amount: number) => {
     if (!amount || amount === 0) {
       return (
@@ -23,11 +25,11 @@ export default function TransactionsTotalAmount() {
           className={styles.amount}
           style={{ color: 'rgba(250, 250, 250, 0.5)' }}
         >
-          0
+          0 {currency}
         </p>
       );
     }
-    return <p className={styles.amount}>₴{formatAmount(amount)}</p>;
+    return <p className={styles.amount}>{formatAmount(amount)} {currency}</p>;
   };
 
   if (isLoading) {
