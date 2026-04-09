@@ -1,28 +1,28 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import css from './DecorationTab.module.css';
 import { getRandomNumber } from '@/components/Auth/random';
 
-export default function DecorativeTab() {
-  const [balance, setBalance] = useState({
-    dollars: '000',
-    cents: '000',
-    percent: '+0.00%',
-  });
+interface BalanceData {
+  dollars: string;
+  cents: string;
+  percent: string;
+}
 
-  useEffect(() => {
+export default function DecorativeTab() {
+  const [balance] = useState<BalanceData>(() => {
     const dollars = getRandomNumber(500, 999);
     const cents = getRandomNumber(0, 999).toString().padStart(3, '0');
     const percentInt = getRandomNumber(0, 3);
     const percentDec = getRandomNumber(0, 99).toString().padStart(2, '0');
 
-    setBalance({
+    return {
       dollars: dollars.toString(),
       cents,
       percent: `+${percentInt}.${percentDec}%`,
-    });
-  }, []);
+    };
+  });
 
   return (
     <div className={css.container}>
