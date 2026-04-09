@@ -1,6 +1,7 @@
 .userBarContainer {
   position: relative;
   display: inline-block;
+  width: 197px;
 }
 
 .userBtn {
@@ -56,12 +57,16 @@
 }
 
 @media screen and (min-width: 768px) {
-  .userBtn {
-  font-size: 16px;
-}
+  .userBarContainer {
+    width: 220px;
+  }
 
-.avatarWrapper {
-  width: 44px;
-  height: 44px;
-}
+  .userBtn {
+    font-size: 16px;
+  }
+
+  .avatarWrapper {
+    width: 44px;
+    height: 44px;
+  }
 }
