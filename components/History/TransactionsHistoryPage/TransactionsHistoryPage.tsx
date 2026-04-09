@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { useDebouncedCallback } from 'use-debounce';
 import TransactionsTotalAmount from '@/components/Transactions/TransactionsTotalAmount/TransactionsTotalAmount';
 import TransactionsSearchTools from '@/components/History/TransactionsSearchTools/TransactionsSearchTools';
 import TransactionsList from '@/components/History/TransactionsList/TransactionsList';
@@ -19,6 +20,11 @@ export default function TransactionsHistoryPage({
   const [search, setSearch] = useState('');
   const [date, setDate] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [debouncedDate, setDebouncedDate] = useState('');
+
+  const debounceDateChange = useDebouncedCallback((value: string) => {
+    setDebouncedDate(value.trim());
+  }, 350);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -28,6 +34,12 @@ export default function TransactionsHistoryPage({
     return () => clearTimeout(timer);
   }, [search]);
 
+  useEffect(() => {
+    debounceDateChange(date);
+
+    return () => debounceDateChange.cancel();
+  }, [date, debounceDateChange]);
+
   const {
     data = [],
     isLoading,
@@ -35,7 +47,7 @@ export default function TransactionsHistoryPage({
     error,
   } = useTransactions({
     type,
-    date: date || undefined,
+    date: debouncedDate || undefined,
     search: debouncedSearch || undefined,
   });
 
