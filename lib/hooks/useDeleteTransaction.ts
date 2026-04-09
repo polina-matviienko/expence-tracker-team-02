@@ -15,8 +15,7 @@ export const useDeleteTransaction = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, type }: DeleteTransactionPayload) =>
-      deleteTransaction(type, id),
+    mutationFn: ({ id }: DeleteTransactionPayload) => deleteTransaction(id),
     onSuccess: async (_, variables) => {
       await queryClient.invalidateQueries({
         queryKey: queryKeys.transactionsByType(variables.type),

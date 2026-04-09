@@ -175,11 +175,10 @@ export const updateTransactionServer = async (
 };
 
 export const deleteTransactionServer = async (
-  type: TransactionType,
   id: string
 ): Promise<DeleteTransactionResponse> => {
   const { data } = await nextServer.delete<DeleteTransactionResponse>(
-    `/transactions/${type}/${id}`,
+    `/transactions/${id}`,
     {
       headers: await getAuthHeaders(),
     }
