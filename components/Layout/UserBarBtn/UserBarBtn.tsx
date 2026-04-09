@@ -31,8 +31,8 @@ const UserBarBtn = ({ onBurgerClose }: UserBarBtnProps) => {
             <Image
               src={user.avatarUrl}
               alt={userName}
-              width={32}
-              height={32}
+              width={34}
+              height={34}
               className={css.userAvatar}
             />
           ) : (
