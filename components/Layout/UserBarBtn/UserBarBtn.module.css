@@ -1,6 +1,7 @@
 .userBarContainer {
   position: relative;
   display: inline-block;
+  width: 197px;
 }
 
 .userBtn {
@@ -56,6 +57,10 @@
 }
 
 @media screen and (min-width: 768px) {
+  .userBarContainer {
+    width: 220px;
+  }
+
   .userBtn {
     font-size: 16px;
   }
