@@ -41,7 +41,7 @@
   margin: 13px 0 0 0;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1439px) {
   .pageContainer {
     height: auto;
     overflow-y: auto;

@@ -16,6 +16,12 @@ import styles from './CategoriesModal.module.css';
 import { Axios, AxiosError } from 'axios';
 import { log } from 'console';
 
+interface ErrorResponse {
+  response?: {
+    message?: string;
+  };
+}
+
 export default function CategoriesModal() {
   const {
     isCategoriesModalOpen,
@@ -58,16 +64,20 @@ export default function CategoriesModal() {
         }
         resetForm();
         setEditingId(null);
-      } catch (error: any) {
-        toast.error(error.response?.data?.message || 'Action failed');
+      } catch (error: unknown) {
+        if (error instanceof AxiosError) {
+          const err = error as AxiosError<ErrorResponse>;
+          toast.error(err.response?.data?.response?.message || 'Action failed');
+        } else {
+          toast.error('Unexpected error');
+        }
       }
     },
   });
 
   // The API returns { incomes: [], expenses: [] }
-  const currentCategories = categoriesData
-    ? (categoriesData as any)[transactionType] || []
-    : [];
+  const currentCategories =
+    (categoriesData && categoriesData[transactionType]) || [];
 
   const handleEditInit = (id: string, name: string) => {
     setEditingId(id);
@@ -78,10 +88,15 @@ export default function CategoriesModal() {
     try {
       await deleteCategoryMutation.mutateAsync(id);
       toast.success('Category deleted');
-    } catch (error: any) {
-      toast.error(
-        error.response?.data?.response?.message || 'Something went wrong'
-      );
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        const err = error as AxiosError<ErrorResponse>;
+        toast.error(
+          err.response?.data?.response?.message || 'Something went wrong'
+        );
+      } else {
+        toast.error('Unexpected error');
+      }
     }
   };
 
@@ -93,6 +108,7 @@ export default function CategoriesModal() {
   const handleClose = () => {
     setEditingId(null);
     formik.resetForm();
+    setSelectedCategory('', '');
     closeCategoriesModal();
   };
 
@@ -118,7 +134,7 @@ export default function CategoriesModal() {
               No categories found for {transactionType}
             </p>
           ) : (
-            currentCategories.map((cat: any) => (
+            currentCategories.map(cat => (
               <div key={cat._id} className={styles.item}>
                 <span className={styles.name}>{cat.categoryName}</span>
                 <div className={styles.actions}>

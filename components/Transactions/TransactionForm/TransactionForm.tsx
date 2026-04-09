@@ -7,14 +7,30 @@ import * as Yup from 'yup';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { toast } from 'react-hot-toast';
-import { useUserStore } from '@/lib/store/userStore';
+import { useAuthStore } from '@/lib/store/authStore';
 import { useUiStore } from '@/lib/store/uiStore';
 import { useCreateTransaction } from '@/lib/hooks/useCreateTransactionFixed';
 import styles from './TransactionForm.module.css';
 import Button from '@/components/UI/Button/Button';
+import { AxiosError } from 'axios';
 
 interface TransactionFormProps {
   transactionType: 'incomes' | 'expenses';
+}
+
+interface ErrorResponse {
+  response?: {
+    message?: string;
+  };
+}
+
+interface TransactionPayload {
+  type: 'incomes' | 'expenses';
+  date: string;
+  time: string;
+  category: string;
+  sum: number;
+  comment?: string;
 }
 
 export default function TransactionForm({
@@ -27,7 +43,7 @@ export default function TransactionForm({
     selectedCategoryId,
     setSelectedCategory,
   } = useUiStore();
-  const { user } = useUserStore();
+  const { user } = useAuthStore();
   const currency = user?.currency ? user.currency.toUpperCase() : 'UAH';
   const createTransactionMutation = useCreateTransaction();
 
@@ -42,7 +58,9 @@ export default function TransactionForm({
     },
     validationSchema: Yup.object({
       type: Yup.string().required('Required'),
-      date: Yup.date().required('Required'),
+      date: Yup.date()
+        .max(new Date(), 'Date cannot be in the future')
+        .required('Required'),
       time: Yup.string().required('Required'),
       category: Yup.string().required('Please select a category'),
       sum: Yup.number().positive('Must be positive').required('Required'),
@@ -50,8 +68,8 @@ export default function TransactionForm({
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
-        const payload: any = {
-          type: values.type as 'incomes' | 'expenses',
+        const payload: TransactionPayload = {
+          type: values.type,
           date: values.date
             ? (values.date as Date).toISOString().split('T')[0]
             : '',
@@ -68,11 +86,16 @@ export default function TransactionForm({
         toast.success('Transaction created successfully!');
         resetForm();
         setSelectedCategory('', ''); // Clear after success
-      } catch (error: any) {
-        toast.error(
-          error.response?.data?.response?.message ||
-            'Failed to create transaction'
-        );
+      } catch (error: unknown) {
+        if (error instanceof AxiosError) {
+          const err = error as AxiosError<ErrorResponse>;
+          toast.error(
+            err.response?.data?.response?.message ||
+              'Failed to create transaction'
+          );
+        } else {
+          toast.error('Unexpected error');
+        }
       }
     },
   });
@@ -85,9 +108,7 @@ export default function TransactionForm({
 
   // Sync selected category from store
   useEffect(() => {
-    if (selectedCategoryName) {
-      formik.setFieldValue('category', selectedCategoryName);
-    }
+    formik.setFieldValue('category', selectedCategoryName);
   }, [selectedCategoryName]);
 
   const handleCategoryClick = () => {
@@ -157,6 +178,7 @@ export default function TransactionForm({
                 dateFormat="MM/dd/yyyy"
                 placeholderText="mm/dd/yyyy"
                 className={styles.input}
+                maxDate={new Date()}
               />
               <span className={styles.inputIcon}>
                 <svg
@@ -207,6 +229,24 @@ export default function TransactionForm({
                 dateFormat="HH:mm"
                 placeholderText="00:00:00"
                 className={styles.input}
+                maxTime={
+                  formik.values.date &&
+                  new Date(formik.values.date).toDateString() ===
+                    new Date().toDateString()
+                    ? new Date()
+                    : undefined
+                }
+                minTime={
+                  formik.values.date &&
+                  new Date(formik.values.date).toDateString() ===
+                    new Date().toDateString()
+                    ? (() => {
+                        const d = new Date();
+                        d.setHours(0, 0, 0, 0);
+                        return d;
+                      })()
+                    : undefined
+                }
               />
               <span className={styles.inputIcon}>
                 <svg
