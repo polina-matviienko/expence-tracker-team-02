@@ -11,6 +11,8 @@ export default function AllUsersTab() {
           <Image
             key={i}
             src={src}
+            width={125}
+            height={48}
             alt="User"
             className={css.avatar}
             style={{ transform: `translateX(-${i * 12}px)` }}
