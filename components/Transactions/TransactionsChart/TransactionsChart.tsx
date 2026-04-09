@@ -1,9 +1,12 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import { useMemo, useState, useEffect } from 'react';
+import { PieChart, Pie, Cell } from 'recharts';
 import { useStats } from '@/lib/hooks/useStats';
+import { useTransactions } from '@/lib/hooks/useTransactions';
+import { useCategories } from '@/lib/hooks/useCategories';
 import Skeleton from '@/components/UI/Skeleton/Skeleton';
+import { useUiStore } from '@/lib/store/uiStore';
 import styles from './TransactionsChart.module.css';
 
 const generateUniqueRandomColors = (count: number) => {
@@ -33,19 +36,104 @@ const generateUniqueRandomColors = (count: number) => {
 };
 
 export default function TransactionsChart() {
-  const { data: stats, isLoading } = useStats();
+  const transactionType = useUiStore(state => state.transactionType);
+  const { data: stats, isLoading: isStatsLoading } = useStats();
+  const { data: transactions, isLoading: isTransactionsLoading } = useTransactions({ 
+    type: 'incomes' 
+  });
+  const { data: categories, isLoading: isCategoriesLoading } = useCategories();
   const [hoveredData, setHoveredData] = useState<{
     percentage: number;
     name: string;
     value: number;
   } | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setIsMounted(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  const incomesAggregated = useMemo(() => {
+    if (transactionType !== 'incomes' || !transactions) return [];
+
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+
+    // 1. Map to the requested structure: { date, category: { _id, categoryName, sum } }
+    const mapped = transactions.map(t => ({
+      date: t.date,
+      category: {
+        _id: t.category._id,
+        categoryName: t.category.categoryName,
+        sum: t.sum,
+      },
+    }));
+
+    // 2. Filter by current month and year
+    const filtered = mapped.filter(item => {
+      const d = new Date(item.date);
+      return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+    });
+
+    // 3. Aggregate by category
+    const groups: Record<
+      string,
+      { _id: string; category: string; totalAmount: number }
+    > = {};
+
+    filtered.forEach(item => {
+      const id = item.category._id;
+      if (!groups[id]) {
+        groups[id] = {
+          _id: id,
+          category: item.category.categoryName,
+          totalAmount: 0,
+        };
+      }
+      groups[id].totalAmount += item.category.sum;
+    });
+
+    return Object.values(groups);
+  }, [transactions, transactionType]);
+
+  const filteredStatsByType = useMemo(() => {
+    if (transactionType === 'incomes') {
+      return incomesAggregated;
+    }
+
+    if (!stats || !categories) return [];
+
+    // Existing logic for Expenses
+    const relevantCategories = categories.expenses;
+
+    const relevantCategoryNames = new Set(
+      relevantCategories.map(c => c.categoryName)
+    );
+
+    const relevantCategoryIds = new Set(relevantCategories.map(c => c._id));
+
+    return stats.filter(
+      item =>
+        relevantCategoryIds.has(item._id) ||
+        relevantCategoryNames.has(item.category)
+    );
+  }, [stats, categories, transactionType, incomesAggregated]);
 
   const totalAmount = useMemo(() => {
-    return stats?.reduce((acc, item) => acc + item.totalAmount, 0) ?? 0;
-  }, [stats]);
+    return (
+      filteredStatsByType?.reduce((acc, item) => acc + item.totalAmount, 0) ?? 0
+    );
+  }, [filteredStatsByType]);
 
   const processedStats = useMemo(() => {
-    if (!stats || stats.length === 0 || totalAmount === 0) return [];
+    if (
+      !filteredStatsByType ||
+      filteredStatsByType.length === 0 ||
+      totalAmount === 0
+    )
+      return [];
 
     let othersTotal = 0;
     const filteredStats: {
@@ -54,7 +142,7 @@ export default function TransactionsChart() {
       totalAmount: number;
     }[] = [];
 
-    stats.forEach(item => {
+    filteredStatsByType.forEach(item => {
       const percentage = (item.totalAmount / totalAmount) * 100;
       if (percentage < 1) {
         othersTotal += item.totalAmount;
@@ -74,7 +162,7 @@ export default function TransactionsChart() {
     }
 
     return filteredStats;
-  }, [stats, totalAmount]);
+  }, [filteredStatsByType, totalAmount]);
 
   const colorsList = useMemo(() => {
     if (!processedStats || processedStats.length === 0) return [];
@@ -103,7 +191,11 @@ export default function TransactionsChart() {
   const innerRadius = 70;
   const outerRadius = 120;
 
-  if (isLoading) {
+  if (
+    (transactionType === 'incomes' && isTransactionsLoading) ||
+    (transactionType === 'expenses' && isStatsLoading) ||
+    isCategoriesLoading
+  ) {
     return (
       <div className={styles.loader}>
         <div className={styles.skeletonChart}>
@@ -119,10 +211,17 @@ export default function TransactionsChart() {
     );
   }
 
+  // Prevent hydration mismatch by rendering nothing on the server until mounted
+  if (!isMounted) {
+    return null;
+  }
+
   // To make it look like the figma gauge half-pie chart:
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Expenses Categories</h2>
+      <h2 className={styles.title}>
+        {transactionType === 'incomes' ? 'Incomes' : 'Expenses'} Categories
+      </h2>
 
       <div className={styles.chartAndListWrapper}>
         <div
@@ -138,14 +237,14 @@ export default function TransactionsChart() {
               }
               cx={cx}
               cy={cy}
-              startAngle={0}
-              endAngle={180}
+              startAngle={0!}
+              endAngle={180!}
               innerRadius={innerRadius}
               outerRadius={outerRadius}
               dataKey="value"
               stroke="none"
-              cornerRadius={8}
-              paddingAngle={isEmpty ? 0 : -10}
+              cornerRadius={7}
+              paddingAngle={isEmpty ? 0 : -6}
               onMouseEnter={data => {
                 if (
                   !isEmpty &&
@@ -155,7 +254,7 @@ export default function TransactionsChart() {
                 ) {
                   setHoveredData({
                     percentage: Math.round((data.value / totalAmount) * 100),
-                    name: data.name || 'default',
+                    name: data.name || 'Unknown category',
                     value: data.value,
                   });
                 }

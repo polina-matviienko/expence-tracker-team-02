@@ -1,4 +1,4 @@
-﻿// Обновление серверной сессии (mutation placeholder).
+// Обновление серверной сессии (mutation placeholder).
 'use client';
 
 import { useMutation } from '@tanstack/react-query';

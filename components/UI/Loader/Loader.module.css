@@ -14,7 +14,7 @@
   place-items: center;
   background: radial-gradient(circle at 20% 20%, rgba(0, 210, 127, 0.08), transparent 35%),
     radial-gradient(circle at 80% 30%, rgba(127, 86, 217, 0.12), transparent 40%),
-    var(--bg-color);
+    rgba(12, 13, 13, 0.55);
   z-index: 9999;
 }
 

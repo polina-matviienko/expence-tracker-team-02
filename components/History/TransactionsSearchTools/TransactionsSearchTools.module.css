@@ -1,0 +1,90 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.searchLabel,
+.dateLabel {
+  display: block;
+}
+
+.inputWithIcon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.inputWithIcon :global(.react-datepicker-wrapper) {
+  width: 100%;
+}
+
+.inputIcon {
+  position: absolute;
+  right: 30px;
+  left: auto;
+  top: 50%;
+  transform: translate(0, -50%);
+  height: 20px;
+  color: #0ef387;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.toolIcon {
+  stroke: #0ef387;
+}
+
+.input {
+  width: 100%;
+  height: 50px;
+  border-radius: 30px;
+  background: #0c0d0d;
+  color: #fafafa;
+  padding: 0 60px 0 20px;
+  font-size: 16px;
+}
+
+.searchInput {
+  border: none;
+}
+
+.dateInput {
+  border: 1px solid rgba(250, 250, 250, 0.2);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--green-neon);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+@media (min-width: 767.98px) {
+  .wrapper {
+    flex-direction: row;
+    align-items: center;
+    gap: 13px;
+  }
+
+  .searchLabel {
+    max-width: 261px;
+  }
+
+  .dateLabel {
+    max-width: 187px;
+  }
+}

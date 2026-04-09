@@ -11,6 +11,7 @@ import heroPhone from '@/public/img/Rectangle1xphone.png';
 import heroTab from '@/public/img/Rectangle1xtab.png';
 import heroDesk from '@/public/img/Rectangle1xdesk.png';
 import { register, login } from '@/lib/api/clientApi';
+import { useAuthStore } from '@/lib/store/authStore';
 import DecorativeTab from '@/components/Auth/DecorationTab/DecorationTab';
 import type { LoginRequest, RegisterRequest } from '@/types/authentication';
 
@@ -22,6 +23,9 @@ export default function AuthForm({ mode }: AuthFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [showPassword, setShowPassword] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isPasswordTouched, setIsPasswordTouched] = useState(false);
 
   const isRegister = mode === 'register';
 
@@ -56,6 +60,20 @@ export default function AuthForm({ mode }: AuthFormProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    if (name === 'password') {
+      setIsPasswordValid(value.length >= 8);
+      setIsPasswordTouched(true);
+    }
+    if (errors[name as keyof typeof errors]) {
+      setErrors(prev => ({ ...prev, [name]: undefined }));
+    }
+  };
+
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name } = e.target;
+    if (name === 'password') {
+      setIsPasswordTouched(true);
+    }
     if (errors[name as keyof typeof errors]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
     }
@@ -73,6 +91,8 @@ export default function AuthForm({ mode }: AuthFormProps) {
           await login(formData as LoginRequest);
         }
 
+        await useAuthStore.getState().loadUser();
+
         toast.success(
           isRegister ? 'Registration was successful' : 'Login successful'
         );
@@ -84,6 +104,10 @@ export default function AuthForm({ mode }: AuthFormProps) {
   };
 
   const togglePassword = () => setShowPassword(!showPassword);
+
+  const showTrash = !isPasswordValid && isPasswordTouched && !isPasswordFocused;
+  const showCheck = isPasswordValid;
+  const showEye = !showTrash && !showCheck;
 
   const description = isRegister
     ? 'Step into a world of hassle-free expense management! Your journey towards financial mastery begins here.'
@@ -121,6 +145,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
                   placeholder="Name"
                   value={(formData as RegisterRequest).name || ''}
                   onChange={handleChange}
+                  onFocus={handleFocus}
                   className={`${css.input} ${errors.name ? css.error : ''}`}
                   disabled={isPending}
                 />
@@ -137,6 +162,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
                 placeholder="Email"
                 value={formData.email}
                 onChange={handleChange}
+                onFocus={handleFocus}
                 className={`${css.input} ${errors.email ? css.error : ''}`}
                 disabled={isPending}
               />
@@ -153,26 +179,47 @@ export default function AuthForm({ mode }: AuthFormProps) {
                   placeholder="Password"
                   value={formData.password}
                   onChange={handleChange}
-                  className={`${css.input} ${errors.password ? css.error : ''}`}
+                  onFocus={e => {
+                    handleFocus(e);
+                    setIsPasswordFocused(true);
+                  }}
+                  onBlur={() => setIsPasswordFocused(false)}
+                  className={`${css.input} ${errors.password ? css.error : ''} ${showCheck ? css.inputSuccess : ''}`}
                   disabled={isPending}
                 />
                 <button
                   type="button"
-                  onClick={togglePassword}
-                  className={css.eyeButton}
+                  onMouseDown={event => event.preventDefault()}
+                  onClick={showEye ? togglePassword : undefined}
+                  className={`${css.eyeButton} ${showTrash ? css.iconInvalid : ''} ${showCheck ? css.iconValid : ''}`}
                   tabIndex={-1}
                 >
-                  {showPassword ? (
-                    <svg width="24" height="24">
-                      <use href="/icons.svg#icon-eye-off" />
+                  {showTrash ? (
+                    <span className={css.statusIcon}>
+                      <svg width="12" height="12">
+                        <use href="/icons.svg#icon-trash" />
+                      </svg>
+                    </span>
+                  ) : showCheck ? (
+                    <span className={css.statusIcon}>
+                      <svg width="12" height="12">
+                        <use href="/icons.svg#icon-check" />
+                      </svg>
+                    </span>
+                  ) : showPassword ? (
+                    <svg width="16" height="16">
+                      <use href="/icons.svg#eye" />
                     </svg>
                   ) : (
-                    <svg width="24" height="24">
-                      <use href="/icons.svg#eye" />
+                    <svg width="16" height="16">
+                      <use href="/icons.svg#icon-eye-off" />
                     </svg>
                   )}
                 </button>
               </div>
+              {showCheck && !errors.password && (
+                <span className={css.passwordStatus}>Password is secure</span>
+              )}
               {errors.password && (
                 <span className={css.errorText}>{errors.password}</span>
               )}

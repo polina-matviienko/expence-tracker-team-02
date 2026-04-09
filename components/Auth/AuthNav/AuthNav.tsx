@@ -14,7 +14,7 @@ export default function AuthNav() {
           type="button"
           variant="green"
           size="desktop"
-          className={css.btn}
+          className={`${css.btn} ${css.signUpBtn}`}
           onClick={() => router.push('/register')}
         >
           Sign Up
@@ -23,7 +23,7 @@ export default function AuthNav() {
           type="button"
           variant="outline"
           size="desktop"
-          className={css.btn}
+          className={`${css.btn} ${css.signInBtn}`}
           onClick={() => router.push('/login')}
         >
           Sign In

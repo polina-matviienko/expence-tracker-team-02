@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import DatePicker from 'react-datepicker';
@@ -19,6 +20,7 @@ interface TransactionFormProps {
 export default function TransactionForm({
   transactionType,
 }: TransactionFormProps) {
+  const router = useRouter();
   const {
     openCategoriesModal,
     selectedCategoryName,
@@ -50,7 +52,9 @@ export default function TransactionForm({
       try {
         const payload: any = {
           type: values.type as 'incomes' | 'expenses',
-          date: values.date.toISOString().split('T')[0],
+          date: values.date
+            ? (values.date as Date).toISOString().split('T')[0]
+            : '',
           time: values.time,
           category: selectedCategoryId,
           sum: Number(values.sum),
@@ -66,7 +70,8 @@ export default function TransactionForm({
         setSelectedCategory('', ''); // Clear after success
       } catch (error: any) {
         toast.error(
-          error.response?.data?.message || 'Failed to create transaction'
+          error.response?.data?.response?.message ||
+            'Failed to create transaction'
         );
       }
     },
@@ -104,6 +109,7 @@ export default function TransactionForm({
               checked={formik.values.type === 'expenses'}
               onChange={e => {
                 const newType = e.target.value as 'incomes' | 'expenses';
+                router.push(`/transactions/${newType}`);
                 formik.resetForm({
                   values: {
                     ...formik.initialValues,
@@ -124,6 +130,7 @@ export default function TransactionForm({
               checked={formik.values.type === 'incomes'}
               onChange={e => {
                 const newType = e.target.value as 'incomes' | 'expenses';
+                router.push(`/transactions/${newType}`);
                 formik.resetForm({
                   values: {
                     ...formik.initialValues,
@@ -144,8 +151,10 @@ export default function TransactionForm({
             <div className={styles.inputWithIcon}>
               <DatePicker
                 selected={formik.values.date}
-                onChange={date => formik.setFieldValue('date', date)}
-                dateFormat="dd/MM/yyyy"
+                onChange={(date: Date | null) =>
+                  formik.setFieldValue('date', date)
+                }
+                dateFormat="MM/dd/yyyy"
                 placeholderText="mm/dd/yyyy"
                 className={styles.input}
               />
@@ -178,7 +187,7 @@ export default function TransactionForm({
                   d.setHours(Number(hours) || 0, Number(minutes) || 0, 0, 0);
                   return d;
                 })()}
-                onChange={date => {
+                onChange={(date: Date | null) => {
                   if (date) {
                     formik.setFieldValue(
                       'time',
@@ -255,7 +264,7 @@ export default function TransactionForm({
           <label className={styles.label}>Comment</label>
           <textarea
             name="comment"
-            placeholder="Enter the text"
+            placeholder="Enter the text (3-48 characters)"
             value={formik.values.comment}
             onChange={formik.handleChange}
             className={styles.textarea}

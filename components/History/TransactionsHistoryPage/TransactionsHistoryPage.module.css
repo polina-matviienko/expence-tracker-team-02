@@ -1,0 +1,90 @@
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+  color: #fafafa;
+}
+
+.title {
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #fafafa;
+}
+
+.description {
+  margin-top: 20px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: rgba(250, 250, 250, 0.4);
+  max-width: 680px;
+}
+
+.historySection {
+  width: 335px;
+  height: 516px;
+  margin: 0 auto;
+  border-radius: 30px;
+  background: #171719;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.headerSection {
+  margin-bottom: 36px;
+}
+
+.totalSection {
+  margin-bottom: 40px;
+}
+
+@media (min-width: 767.98px) {
+  .pageContainer {
+    gap: 24px;
+  }
+
+  .title {
+    font-size: 38px;
+    line-height: 1.15;
+  }
+
+  .description {
+    margin-top: 13px;
+    font-size: 16px;
+    max-width: 532px;
+  }
+
+  .historySection {
+    width: 704px;
+    padding: 32px;
+  }
+}
+
+@media (min-width: 1439.98px) {
+  .pageContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: 94px;
+    row-gap: 40px;
+  }
+
+  .headerSection {
+    margin-bottom: 0;
+  }
+
+  .totalSection {
+    margin-bottom: 0;
+  }
+
+  .historySection {
+    width: 1240px;
+    padding: 20px 40px;
+    margin: 0;
+  }
+}
