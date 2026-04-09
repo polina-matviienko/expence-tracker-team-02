@@ -43,7 +43,6 @@ const ProfileSettings = () => {
       }
 
       toast.success('Profile successfully updated!');
-      onClose();
     } catch (error) {
       let serverErrorMsg =
         'Can not update profile info. Please try again later.';

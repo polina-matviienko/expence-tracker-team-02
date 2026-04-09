@@ -25,6 +25,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const loadUser = async () => {
+      const token = document.cookie.includes('token');
+      if (!token) return;
       try {
         const user = await getCurrentUser();
         setUser(user);
