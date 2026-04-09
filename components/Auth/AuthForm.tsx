@@ -12,12 +12,17 @@ import heroTab from '@/public/img/Rectangle1xtab.png';
 import heroDesk from '@/public/img/Rectangle1xdesk.png';
 import { register, login } from '@/lib/api/clientApi';
 import { useAuthStore } from '@/lib/store/authStore';
-import DecorativeTab from '@/components/Auth/DecorationTab/DecorationTab';
 import type { LoginRequest, RegisterRequest } from '@/types/authentication';
+import dynamic from 'next/dynamic';
 
 interface AuthFormProps {
   mode: 'login' | 'register';
 }
+
+const DecorativeTab = dynamic(
+  () => import('@/components/Auth/DecorationTab/DecorationTab'),
+  { ssr: false }
+);
 
 export default function AuthForm({ mode }: AuthFormProps) {
   const router = useRouter();
@@ -254,7 +259,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
               </>
             ) : (
               <>
-                Don't have an account?{' '}
+                Don`t have an account?{' '}
                 <Link href="/register" className={css.link}>
                   Sign Up
                 </Link>
