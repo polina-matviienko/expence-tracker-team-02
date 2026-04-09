@@ -1,9 +1,8 @@
-"use client";
-import AddTransaction from "@/components/Modals/AddTransaction/AddTransaction";
-import EditTransaction from "@/components/Modals/EditTransaction/EditTransaction";
-import LogoutModal from "@/components/Modals/LogoutModal/LogoutModal";
-import ProfileSettings from "@/components/Modals/ProfileSettings/ProfileSettings";
-import { useModal } from "@/lib/hooks/use-modal-store";
+'use client';
+import AddTransaction from '@/components/Modals/AddTransaction/AddTransaction';
+import LogoutModal from '@/components/Modals/LogoutModal/LogoutModal';
+import ProfileSettings from '@/components/Modals/ProfileSettings/ProfileSettings';
+import { useModal } from '@/lib/hooks/use-modal-store';
 
 export const ModalProvider = () => {
   const { type, isOpen } = useModal();
@@ -12,10 +11,9 @@ export const ModalProvider = () => {
 
   return (
     <>
-      {type === "ADD_TRANSACTION" && <AddTransaction />}
-      {type === "EDIT_TRANSACTION" && <EditTransaction />}
-      {type === "PROFILE_SETTINGS" && <ProfileSettings />}
-      {type === "LOGOUT_CONFIRM" && <LogoutModal />}
+      {type === 'ADD_TRANSACTION' && <AddTransaction />}
+      {type === 'PROFILE_SETTINGS' && <ProfileSettings />}
+      {type === 'LOGOUT_CONFIRM' && <LogoutModal />}
     </>
   );
 };
