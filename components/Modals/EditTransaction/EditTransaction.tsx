@@ -91,7 +91,7 @@ export default function EditTransaction({
             return trimmedValue === '' || trimmedValue.length >= 3;
           }
         )
-        .max(250, 'Too long'),
+        .max(48, 'Too long'),
     }),
     onSubmit: async values => {
       try {
@@ -145,8 +145,8 @@ export default function EditTransaction({
                   formik.setFieldValue('date', value)
                 }
                 onBlur={() => formik.setFieldTouched('date', true)}
-                dateFormat="dd/MM/yyyy"
-                placeholderText="dd/mm/yyyy"
+                dateFormat="MM/dd/yyyy"
+                placeholderText="mm/dd/yyyy"
                 className={css.input}
                 required
               />
@@ -255,7 +255,7 @@ export default function EditTransaction({
             value={formik.values.comment}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            maxLength={250}
+            maxLength={48}
           />
           {formik.touched.comment && formik.errors.comment && (
             <span className={css.error}>{formik.errors.comment}</span>

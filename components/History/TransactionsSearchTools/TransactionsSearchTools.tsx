@@ -64,8 +64,8 @@ export default function TransactionsSearchTools({
           <DatePicker
             selected={selectedDate}
             onChange={handlePickerChange}
-            dateFormat="dd/MM/yyyy"
-            placeholderText="dd/mm/yyyy"
+            dateFormat="MM/dd/yyyy"
+            placeholderText="mm/dd/yyyy"
             className={`${css.input} ${css.dateInput}`}
           />
           <span className={css.inputIcon}>
