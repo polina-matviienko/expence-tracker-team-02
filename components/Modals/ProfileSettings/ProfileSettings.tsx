@@ -13,6 +13,7 @@ import {
   removeAvatar,
 } from '@/lib/api/clientApi';
 import ProfileSettingsForm from '@/components/UI/ProfileSettingsForm/ProfileSettingsForm';
+import { resizeImage } from './Utiles';
 
 const ProfileSettings = () => {
   const { onClose } = useModal();
@@ -61,7 +62,8 @@ const ProfileSettings = () => {
     setIsAvatarLoading(true);
     try {
       const formData = new FormData();
-      formData.append('avatar', file);
+      const resizedFile = await resizeImage(file);
+      formData.append('avatar', resizedFile);
 
       const response = await uploadAvatar(formData);
 
