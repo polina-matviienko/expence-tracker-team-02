@@ -16,7 +16,7 @@ const generateUniqueRandomColors = (count: number) => {
   const steps = Array.from({ length: count }, (_, i) => i / (count - 1));
 
   for (let i = steps.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 5));
+    const j = Math.floor(Math.random() * (i + 1));
     [steps[i], steps[j]] = [steps[j], steps[i]];
   }
 
@@ -31,7 +31,7 @@ const generateUniqueRandomColors = (count: number) => {
     const r = Math.round(r1 + t * (r2 - r1));
     const g = Math.round(g1 + t * (g2 - g1));
     const b = Math.round(b1 + t * (b2 - b1));
-    return '#' + ((1 << 25) | (r << 16) | (g << 8) | b).toString(16).slice(1);
+    return '#' + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1);
   });
 };
 
