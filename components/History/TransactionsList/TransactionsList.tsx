@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useDeleteTransaction } from '@/lib/hooks/useDeleteTransaction';
-import { useAuthStore } from '@/lib/store/authStore';
+import { useUserStore } from '@/lib/store/userStore';
 import type { TransactionItem } from '@/types/transaction';
 import type { TransactionType } from '@/types/sharedTypes';
 import EditTransaction from '@/components/Modals/EditTransaction/EditTransaction';
@@ -21,7 +21,7 @@ export default function TransactionsList({
   isLoading,
 }: TransactionsListProps) {
   const deleteMutation = useDeleteTransaction();
-  const user = useAuthStore(state => state.user);
+  const user = useUserStore(state => state.user);
   const [editedTransaction, setEditedTransaction] =
     useState<TransactionItem | null>(null);
   const [expandedCommentId, setExpandedCommentId] = useState<string | null>(
