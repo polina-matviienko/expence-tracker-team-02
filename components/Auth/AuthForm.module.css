@@ -55,11 +55,9 @@
   stroke: #0c0d0d;
 }
 .iconInvalid .statusIcon {
-  background-color: #e74a3b;
   fill: #e74a3b;
 }
 .iconValid .statusIcon {
-  background-color: #097b45;
   fill: #097b45;
 }
 .passwordStatus {
