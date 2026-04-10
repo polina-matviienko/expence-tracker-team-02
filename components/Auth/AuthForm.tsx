@@ -1,6 +1,5 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import css from './AuthForm.module.css';
 import { useRouter } from 'next/navigation';

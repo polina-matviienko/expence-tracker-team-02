@@ -4,31 +4,45 @@
   margin-bottom: 29px;
   margin-top: 30px;
 }
-.buttons {
+.links {
   display: flex;
   gap: 20px;
   justify-content: center;
 }
+.link {
+  font-size: 14px;
+  height: 45px;
+}
 .linkUp {
+  background-color: var(--green-neon);
   text-decoration: none;
-  flex: 1;
-  max-width: 139px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 139px;
+  border-radius: 40px;
+  color: #0c0d0d;
 }
 .linkIn {
   text-decoration: none;
-  flex: 1;
-  max-width: 132px;
-}
-.btn {
-  font-size: 14px;
-  padding: 14px 24px;
-  height: 45px;
-}
-.signUpBtn {
-  width: 139px;
-}
-.signInBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   width: 132px;
+  border: 1px solid rgb(255, 255, 255, 0.4);
+  border-radius: 40px;
+}
+.linkUp:hover,
+.linkUp:focus {
+  background-color: #0ebb69;
+  transition: ease-in 0.1s;
+}
+.linkIn:hover,
+.linkIn:focus {
+  border-color: #0ef387;
+  transition: ease-in 0.1s;
 }
 @media screen and (min-width: 768px) {
   .nav {
@@ -37,24 +51,17 @@
     margin-bottom: 10px;
     margin-top: 40px;
   }
-  .buttons {
-    display: flex;
-    gap: 16px;
+  .links {
     justify-content: left;
   }
-  .linkUp {
-    max-width: 146px;
-  }
-  .linkIn {
-    max-width: 138px;
-  }
-  .btn {
+  .link {
     height: 47px;
+    font-size: 16px;
   }
-  .signUpBtn {
+  .linkUp {
     width: 146px;
   }
-  .signInBtn {
+  .linkIn {
     width: 138px;
   }
 }
