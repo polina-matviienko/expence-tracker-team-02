@@ -52,7 +52,7 @@
   border-color: #097b45 !important;
 }
 .statusIcon {
-  stroke: #0c0d0d;
+  stroke: none;
 }
 .iconInvalid .statusIcon {
   fill: #e74a3b;
