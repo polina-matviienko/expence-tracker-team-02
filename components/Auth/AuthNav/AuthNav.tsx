@@ -1,33 +1,18 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import Button from '@/components/UI/Button/Button';
+import Link from 'next/link';
 import css from './AuthNav.module.css';
 
 export default function AuthNav() {
-  const router = useRouter();
-
   return (
     <div className={css.nav}>
-      <div className={css.buttons}>
-        <Button
-          type="button"
-          variant="green"
-          size="desktop"
-          className={`${css.btn} ${css.signUpBtn}`}
-          onClick={() => router.push('/register')}
-        >
+      <div className={css.links}>
+        <Link href="/register" className={`${css.linkUp} ${css.link}`}>
           Sign Up
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          size="desktop"
-          className={`${css.btn} ${css.signInBtn}`}
-          onClick={() => router.push('/login')}
-        >
+        </Link>
+        <Link href="/login" className={`${css.linkIn} ${css.link}`}>
           Sign In
-        </Button>
+        </Link>
       </div>
     </div>
   );
