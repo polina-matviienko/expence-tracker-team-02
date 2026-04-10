@@ -100,7 +100,9 @@ export default function TransactionsChart() {
 
   const filteredStatsByType = useMemo(() => {
     if (transactionType === 'incomes') {
-      return incomesAggregated;
+      return [...incomesAggregated].sort(
+        (a, b) => b.totalAmount - a.totalAmount
+      );
     }
 
     if (!stats || !categories) return [];
@@ -114,11 +116,13 @@ export default function TransactionsChart() {
 
     const relevantCategoryIds = new Set(relevantCategories.map(c => c._id));
 
-    return stats.filter(
+    const results = stats.filter(
       item =>
         relevantCategoryIds.has(item._id) ||
         relevantCategoryNames.has(item.category)
     );
+
+    return [...results].sort((a, b) => b.totalAmount - a.totalAmount);
   }, [stats, categories, transactionType, incomesAggregated]);
 
   const totalAmount = useMemo(() => {
