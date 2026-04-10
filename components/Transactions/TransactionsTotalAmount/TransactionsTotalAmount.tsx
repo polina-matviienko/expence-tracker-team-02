@@ -1,11 +1,13 @@
 'use client';
 
 import { useCurrentUser } from '@/lib/hooks/useCurrentUser';
+import { useAuthStore } from '@/lib/store/authStore';
 import styles from './TransactionsTotalAmount.module.css';
 import Skeleton from '@/components/UI/Skeleton/Skeleton';
 
 export default function TransactionsTotalAmount() {
-  const { data: user, isLoading } = useCurrentUser();
+  const { isLoading } = useCurrentUser();
+  const user = useAuthStore(state => state.user);
 
   const incomes = user?.transactionsTotal?.incomes ?? 0;
   const expenses = user?.transactionsTotal?.expenses ?? 0;
@@ -29,7 +31,11 @@ export default function TransactionsTotalAmount() {
         </p>
       );
     }
-    return <p className={styles.amount}>{formatAmount(amount)} {currency}</p>;
+    return (
+      <p className={styles.amount}>
+        {formatAmount(amount)} {currency}
+      </p>
+    );
   };
 
   if (isLoading) {

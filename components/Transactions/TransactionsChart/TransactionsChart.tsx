@@ -16,7 +16,7 @@ const generateUniqueRandomColors = (count: number) => {
   const steps = Array.from({ length: count }, (_, i) => i / (count - 1));
 
   for (let i = steps.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = Math.floor(Math.random() * (i + 5));
     [steps[i], steps[j]] = [steps[j], steps[i]];
   }
 
@@ -31,16 +31,17 @@ const generateUniqueRandomColors = (count: number) => {
     const r = Math.round(r1 + t * (r2 - r1));
     const g = Math.round(g1 + t * (g2 - g1));
     const b = Math.round(b1 + t * (b2 - b1));
-    return '#' + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1);
+    return '#' + ((1 << 25) | (r << 16) | (g << 8) | b).toString(16).slice(1);
   });
 };
 
 export default function TransactionsChart() {
   const transactionType = useUiStore(state => state.transactionType);
   const { data: stats, isLoading: isStatsLoading } = useStats();
-  const { data: transactions, isLoading: isTransactionsLoading } = useTransactions({ 
-    type: 'incomes' 
-  });
+  const { data: transactions, isLoading: isTransactionsLoading } =
+    useTransactions({
+      type: 'incomes',
+    });
   const { data: categories, isLoading: isCategoriesLoading } = useCategories();
   const [hoveredData, setHoveredData] = useState<{
     percentage: number;
@@ -108,7 +109,7 @@ export default function TransactionsChart() {
     if (!stats || !categories) return [];
 
     // Existing logic for Expenses
-    const relevantCategories = categories.expenses;
+    const relevantCategories = categories.expenses || [];
 
     const relevantCategoryNames = new Set(
       relevantCategories.map(c => c.categoryName)
@@ -139,8 +140,9 @@ export default function TransactionsChart() {
     )
       return [];
 
-    let othersTotal = 0;
-    const filteredStats: {
+    // 1. Group categories < 1% into others
+    let initialOthersTotal = 0;
+    const majorCategories: {
       _id: string;
       category: string;
       totalAmount: number;
@@ -149,23 +151,41 @@ export default function TransactionsChart() {
     filteredStatsByType.forEach(item => {
       const percentage = (item.totalAmount / totalAmount) * 100;
       if (percentage < 1) {
-        othersTotal += item.totalAmount;
+        initialOthersTotal += item.totalAmount;
       } else {
-        filteredStats.push(item);
+        majorCategories.push(item);
       }
     });
 
-    if (othersTotal > 0) {
-      filteredStats.push({
+    // 2. Sort major categories descending
+    majorCategories.sort((a, b) => b.totalAmount - a.totalAmount);
+
+    // 3. Take top 5
+    const top5 = majorCategories.slice(0, 5);
+    const restOfMajor = majorCategories.slice(5);
+
+    // 4. Group rest into others
+    const restOfMajorTotal = restOfMajor.reduce(
+      (acc, item) => acc + item.totalAmount,
+      0
+    );
+    const finalOthersTotal = initialOthersTotal + restOfMajorTotal;
+
+    const result = [...top5];
+
+    if (finalOthersTotal > 0) {
+      result.push({
         _id: 'others',
         category: 'Others',
         totalAmount: Math.ceil(
-          othersTotal < totalAmount * 0.01 ? totalAmount * 0.01 : othersTotal
+          finalOthersTotal < totalAmount * 0.01
+            ? totalAmount * 0.01
+            : finalOthersTotal
         ),
       });
     }
 
-    return filteredStats;
+    return result;
   }, [filteredStatsByType, totalAmount]);
 
   const colorsList = useMemo(() => {
@@ -248,7 +268,7 @@ export default function TransactionsChart() {
               dataKey="value"
               stroke="none"
               cornerRadius={7}
-              paddingAngle={isEmpty ? 0 : -6}
+              paddingAngle={isEmpty ? 0 : -8}
               onMouseEnter={data => {
                 if (
                   !isEmpty &&
