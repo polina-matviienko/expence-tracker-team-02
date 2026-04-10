@@ -68,11 +68,16 @@ export default function TransactionForm({
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
+        const formatDate = (date: Date) => {
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+
+          return `${year}-${month}-${day}`;
+        };
         const payload: TransactionPayload = {
           type: values.type,
-          date: values.date
-            ? (values.date as Date).toISOString().split('T')[0]
-            : '',
+          date: values.date ? formatDate(values.date as Date) : '',
           time: values.time,
           category: selectedCategoryId,
           sum: Number(values.sum),
