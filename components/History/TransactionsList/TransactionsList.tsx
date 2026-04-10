@@ -47,11 +47,11 @@ export default function TransactionsList({
     const weekDayShort = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'][
       parsedDate.getDay()
     ];
-    const day = parsedDate.getDate();
+    const day = String(parsedDate.getDate()).padStart(2, '0');
     const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
     const year = parsedDate.getFullYear();
 
-    return `${weekDayShort}, ${day}.${month}.${year}`;
+    return `${weekDayShort}, ${month}.${day}.${year}`;
   };
 
   const onDelete = async (id: string) => {
