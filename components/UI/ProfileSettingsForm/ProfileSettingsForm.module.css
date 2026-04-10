@@ -216,6 +216,8 @@
   height: 42px;
   padding: 12px 14px;
   box-sizing: border-box;
+
+  color: whi;
 }
 
 .inputContainer [class*='field']:focus-within {
@@ -352,6 +354,8 @@
 
 .avatarImage {
   border-radius: 50%;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
 }
 @media only screen and (min-width: 768px) {
