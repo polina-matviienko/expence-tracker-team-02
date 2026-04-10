@@ -226,6 +226,16 @@ input[type='number'] {
   color: rgba(0, 0, 0, 0.3) !important;
 }
 
+.react-datepicker__day--disabled {
+  color: rgba(0, 0, 0, 0.2) !important;
+  cursor: not-allowed !important;
+  pointer-events: none;
+}
+
+.react-datepicker__day--disabled:hover {
+  background-color: transparent !important;
+}
+
 .react-datepicker__navigation {
   top: 12px !important;
 }

@@ -25,6 +25,8 @@ export const useUpdateCategory = () => {
       updateCategory(id, { categoryName }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.categories });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
     },
   });
 };
@@ -35,6 +37,8 @@ export const useDeleteCategory = () => {
     mutationFn: deleteCategory,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.categories });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
     },
   });
 };

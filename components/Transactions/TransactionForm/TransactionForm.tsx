@@ -129,15 +129,14 @@ export default function TransactionForm({
               value="expenses"
               checked={formik.values.type === 'expenses'}
               onChange={e => {
-                const newType = e.target.value as 'incomes' | 'expenses';
-                router.push(`/transactions/${newType}`);
+                router.push(`/transactions/expenses`);
                 formik.resetForm({
                   values: {
                     ...formik.initialValues,
-                    type: newType,
+                    type: 'expenses',
                   },
                 });
-                useUiStore.getState().setTransactionType(newType);
+                useUiStore.getState().setTransactionType('expenses');
                 setSelectedCategory('', '');
               }}
             />
@@ -150,15 +149,14 @@ export default function TransactionForm({
               value="incomes"
               checked={formik.values.type === 'incomes'}
               onChange={e => {
-                const newType = e.target.value as 'incomes' | 'expenses';
-                router.push(`/transactions/${newType}`);
+                router.push(`/transactions/incomes`);
                 formik.resetForm({
                   values: {
                     ...formik.initialValues,
-                    type: newType,
+                    type: 'incomes',
                   },
                 });
-                useUiStore.getState().setTransactionType(newType);
+                useUiStore.getState().setTransactionType('incomes');
                 setSelectedCategory('', '');
               }}
             />
